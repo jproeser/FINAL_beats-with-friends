@@ -1,0 +1,15 @@
+<script src="https://connect.soundcloud.com/sdk/sdk-3.3.0.js"></script>
+<script>
+SC.initialize({
+	client_id: '6d3KZ6G4o4U0GLCiznHCjbQrT2Ee90cn',
+	redirect_uri: 'http://localhost:8080/callback.html'
+});
+
+// initiate auth popup
+SC.connect().then(function() {
+	return SC.get('/me');
+}).then(function(me) {
+	alert('Hello, ' + me.username + '. how are you doing today?');
+});
+</script>
+
