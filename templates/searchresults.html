@@ -10,23 +10,23 @@ h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
 p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 </style>
 
+<div align="center">
 
-{% block content %}
-  <div style="text-align:center;">
+<div style="text-align:center;">
 
-  <h1>Add your SoundCloud Account!</h1>
-  <form method="POST" action="http://localhost:5000/welcome">
 
-      {{ form.hidden_tag() }}
-      {% for message in get_flashed_messages() %}
-      {{ message }}
-      {% endfor %}
-      <p>{{ form.name.label }}{{ form.name() }}</p>
-      <p>{{ form.soundcloud.label }}{{ form.soundcloud() }}</p>
-      <p>{{ form.zipcode.label }}{{ form.zipcode() }}</p>
+<h3>The zipcode you entered was {{ searchzip }}! </h3>
+<h3>The radius you entered was {{ searchradius }}! </h3>
+<h3>The city you searched was {{ city }}! </h3>
+<h3>The zips in your radius are: {{ allzips }}! </h3>
 
-      {{ form.submit() }}
 
-  </form>
-{% endblock %}
 
+<button onclick="goBack()" style="text-align:center;">Go Back</button>
+<button onclick="window.location.href='/'" style="text-align:center;">Go Home</button>
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>

@@ -1,45 +1,4 @@
-# An application about recording favorite songs & info
-import os
-from flask import Flask, render_template, session, redirect, url_for, flash
-from flask_script import Manager, Shell
-from flask import make_response
-# from flask_moment import Moment # requires pip/pip3 install flask_moment
-from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField, Form, BooleanField, PasswordField, validators
-from wtforms.validators import Required
-from wtforms import *
-from flask import *
-from flask_sqlalchemy import SQLAlchemy
-import random
-from flask_migrate import Migrate, MigrateCommand # needs: pip/pip3 install flask-migrate
-from flask_mail import Mail, Message
-from threading import Thread
-from werkzeug import secure_filename
-import json
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import requests
-import re
-import nltk
-import pyzipcode
-#from pyzipcode import ZipCodeDatabase
-#from pyzipcode import Pyzipcode as pz
-from pyzipcode import *
-import unittest
-from uszipcode import ZipcodeSearchEngine
-from bs4 import BeautifulSoup
-from selenium import webdriver
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
-import random
-import sqlite3
-import webbrowser  
-import soundcloud
-import soundcloud as SC
-from soundcloud import *
-from soundcloud.client import Client
-
-
+from importing_modules import *
 
 # Configure base directory of app
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -48,55 +7,45 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.debug = True
 app.static_folder = 'static'
-app.config['SECRET_KEY'] = 'hardtoguessstringfromsi364thisisnotsupersecurebutitsok'
-# app.config['SQLALCHEMY_DATABASE_URI'] =\
-    # 'sqlite:///' + os.path.join(basedir, 'data.sqlite') # Determining where your database file will be stored, and what it will be called
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://localhost/songs_data" # TODO: decide what your new database name will be, and create it in postgresql, before running this new application (it's similar to an old one, but has some more to it)
+app.config['SECRET_KEY'] = 'hardtoguessstring'
+
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL') or "postgresql://localhost/localbeats1"  # TODO: decide what your new database name will be, and create it in postgresql, before running this new application
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Set up email config stuff
+# Seting up email
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587 #default
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME') # TODO export to your environs -- may want a new account just for this. It's expecting gmail, not umich
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME') 
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_SUBJECT_PREFIX'] = '[Songs App]'
 app.config['MAIL_SENDER'] = 'Admin <>' # TODO fill in email
 app.config['ADMIN'] = os.environ.get('ADMIN')
 
-# Set up Flask debug stuff
+# Seting up Flask debuggers
 manager = Manager(app)
-# moment = Moment(app) # For time # Later
 db = SQLAlchemy(app) # For database use
 migrate = Migrate(app, db) # For database use/updating
-manager.add_command('db', MigrateCommand) # Add migrate command to manager
+manager.add_command('db', MigrateCommand) 
 mail = Mail(app) # For email sending
 
+# Login configurations setup
+login_manager = LoginManager()
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'login'
+login_manager.init_app(app) 
 
-# SC.initialize({
-#       client_id: "6d3KZ6G4o4U0GLCiznHCjbQrT2Ee90cn",
-#       redirect_uri: "www.jamesroeser.com",
-#   });
-
-## Set up Shell context so it's easy to use the shell to debug
-# Define function
 def make_shell_context():
     return dict(app=app, db=db)
-# Add function use to manager
 manager.add_command("shell", Shell(make_context=make_shell_context))
 
-
-#########
-######### Everything above this line is important/useful setup, not problem-solving.
-#########
+###################################################################################################
 
 ##### Functions to send email #####
-
 def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
-
 def send_email(to, subject, template, **kwargs): # kwargs = 'keyword arguments', this syntax means to unpack any keyword arguments into the function in the invocation...
     msg = Message(app.config['MAIL_SUBJECT_PREFIX'] + ' ' + subject,
                   sender=app.config['MAIL_SENDER'], recipients=[to])
@@ -107,14 +56,10 @@ def send_email(to, subject, template, **kwargs): # kwargs = 'keyword arguments',
     return thr # The thread being returned
     # However, if your app sends a LOT of email, it'll be better to set up some additional "queuing" software libraries to handle it. But we don't need to do that yet. Not quite enough users!
 
-
-
-
 ##### Set up Models #####
 
 # Set up association Table between artists and albums
 #collections = db.Table()
-
 
 class Name(db.Model):
     __tablename__ = "users"
@@ -145,28 +90,35 @@ class NameForm(FlaskForm):
 
 
 class ZipSearchForm(FlaskForm):
-    searchzip = IntegerField('<h4>Zipcode<br/></h4>', [Required()])
-    searchradius = IntegerField('<h4>Search Mile Radius<br/></h4>', [Required()])
+    searchzip = StringField('<h4>Zipcode</h4>', [Required()])
+    searchradius = StringField('<h4>Search Mile Radius</h4>', [Required()])
     submit = SubmitField('Submit')
 
 
 ##### Set up Controllers (view functions) #####
 
-## Error handling routes
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 404
-
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    return render_template('500.html'), 500
-
 ## Main route
+client = soundcloud.Client(client_id='6d3KZ6G4o4U0GLCiznHCjbQrT2Ee90cn')
+CLIENTID = '6d3KZ6G4o4U0GLCiznHCjbQrT2Ee90cn'
 
-# @app.route('/')
-# def home():
-#     return render_template('home.html')
+def resolve_profile_tracks_url(username):
+    r = requests.get(
+        'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/{}/tracks&client_id={}'.format(username, CLIENTID), allow_redirects=False)
+
+    if 'errors' in json.loads(r.text):
+        print ("Cannot find the specified user.")
+    else:
+        resolved_profile_uri = json.loads(r.text)['location']
+        return resolved_profile_uri
+
+def get_profile_tracks(tracks_url):
+    r = requests.get(tracks_url)
+    return json.loads(r.text)
+
+def get_stream_link(stream_url):
+    unique_id = stream_url[21:][:-6]
+    return 'http://media.soundcloud.com/stream/{}'.format(unique_id)
+
 @app.route('/')
 def zipsearch():
     simpleForm = ZipSearchForm()
@@ -175,6 +127,22 @@ def zipsearch():
     form = ZipSearchForm(request.form)
 
     return search
+
+#@app.route('/test')
+#######https://github.com/ChainsawPolice/soundcloud-page-downloader/blob/master/soundcloud-downloader.py
+def my_stream_codes(soundcloud):
+    name = session.get('name')
+    username = soundcloud
+    tracks_url = resolve_profile_tracks_url(username)
+    track_listing = get_profile_tracks(tracks_url)
+    songlinks=[]
+    for track in track_listing:
+        stream_link = get_stream_link(track['stream_url'])
+        songlinks.append(re.findall('tracks/(\d+)', stream_link))
+    songlinks = list(chain.from_iterable(songlinks))
+    print('songlinks----', songlinks)
+    return render_template('sclinks.html', songlinks=songlinks, name=name)
+
 
 @app.route('/signin')
 def signin():
@@ -185,31 +153,87 @@ def signin():
 
     return newuser
 
-@app.route('/searchresults')
+@app.route('/searchresults', methods = ['GET', 'POST'])
+
 def searchresults():    
-    print('hey')
-    #return name
+    form = ZipSearchForm(request.form)
 
+    searchzip = form.searchzip.data
+    searchradius = form.searchradius.data
 
+    search = ZipcodeSearchEngine()
+    lookupzip = search.by_zipcode(searchzip)
+    city = lookupzip.City
+    lat = lookupzip.Latitude
+    longi = lookupzip.Longitude
+
+    validradius = searchradius.isdigit()
+
+    if searchzip is "" and searchradius is "":
+        flash('Please fill out the form before submitting!') 
+        return redirect(url_for('zipsearch'))
+    elif searchzip is "":
+        flash('Please enter the zip code for the area you would like to search') 
+        return redirect(url_for('zipsearch'))
+    elif city == None:
+        flash('Please enter a valid 5-digit zip code')
+        return redirect(url_for('zipsearch'))
+    elif searchradius is "":
+        flash('Please enter a the mile radius you would like to search around this zip code')
+        return redirect(url_for('zipsearch'))
+    elif validradius == False:
+        flash('Please enter a valid search radius (only type a number)')
+        return redirect(url_for('zipsearch')) 
+    elif searchradius is "0":
+        flash('Please enter a number larger than 1')
+        return redirect(url_for('zipsearch'))
+
+    if request.method == 'POST' and form.validate_on_submit():
+
+        session['searchzip'] = form.searchzip.data
+        searchzip=session.get('searchzip')
+
+        session['searchradius'] = form.searchradius.data
+        searchradius=session.get('searchradius')
+
+        res = search.by_coordinate(lat, longi, radius=int(searchradius), returns=50)
+
+        allzips = []
+        for zipcode in res:
+            allzips.append(zipcode.Zipcode)
+            allzips.append(zipcode.City)
+
+        return render_template('searchresults.html', searchzip = searchzip, searchradius = searchradius, city = city, allzips = allzips)
 
 @app.route('/welcome', methods = ['GET', 'POST'])
 def welcome():
     form = NameForm(request.form)
 
-
     name = form.name.data
     soundcloud = form.soundcloud.data
     zipcode = form.zipcode.data
 
+    search = ZipcodeSearchEngine()
+    lookupzip = search.by_zipcode(zipcode)
+    city = lookupzip.City
+
     x = re.match('^https://soundcloud.com/',soundcloud)    
 
-    if x is None and name is "":
+    if x is None and name is "" and zipcode is "":
         flash('Please fill out the form before submitting!')    
+        return redirect(url_for('signin'))
+    elif soundcloud is "":
+        flash('Please enter your SoundCloud URL!')   
+        return redirect(url_for('signin'))        
     elif name is "":
-        flash('Please enter your name!')    
-    
+        flash('Please enter your name!')   
+        return redirect(url_for('signin'))
+    elif city == None:
+        flash('Please enter a valid 5-digit zip code')
+        return redirect(url_for('signin'))
     elif x is None:
         flash('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
+        return redirect(url_for('signin'))
 
 
     if request.method == 'POST' and form.validate_on_submit():
@@ -218,7 +242,6 @@ def welcome():
         # soundcloud = form.soundcloud.data
 
         
-
         session['name'] = form.name.data
         name=session.get('name')
 
@@ -234,43 +257,35 @@ def welcome():
 
         return render_template('welcome.html', name = name, soundcloud = soundcloud, sc = sc, zipcode=zipcode)
 
-    return redirect(url_for('signin'))
+# def parseSoundcloud(x):
+#     name = session.get('name')
+#     soundcloud = session.get('soundcloud')
+#     sc = str(soundcloud)
+#     sc = sc.replace("https://soundcloud.com/", "")
 
+#     z = str(x)
 
-def parseSoundcloud(x):
-    name = session.get('name')
-    soundcloud = session.get('soundcloud')
-    sc = str(soundcloud)
-    sc = sc.replace("https://soundcloud.com/", "")
+#     driver = webdriver.PhantomJS()
+#     driver.set_window_size(1120, 550)
+#     url = 'https://soundcloud.com/'+str(x)+'/tracks'
+#     #url = z
+#     driver.get(url)
+#     html = driver.page_source
+#     soup = BeautifulSoup(html, "html.parser")
+#     songlinks=[]
 
-    z = str(x)
-
-    driver = webdriver.PhantomJS()
-    driver.set_window_size(1120, 550)
-    url = 'https://soundcloud.com/'+str(x)+'/tracks'
-    #url = z
-    driver.get(url)
-    html = driver.page_source
-    soup = BeautifulSoup(html, "html.parser")
-    songlinks=[]
-
-    scheight = .1
-    while scheight < 9.9:
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight/%s);" % scheight)
-        scheight += .01
-    #scrolls through the entire webpage so that all the songs are found, not just the first 10
-    elem = driver.find_element_by_tag_name('a')
-    for x in driver.find_elements_by_class_name('soundTitle__title'):
-    #finds the link to each song of each user
-        songlinks.append(x.get_attribute('href'))
-    #stores this in a list
-    driver.quit()
-    return render_template('sclinks.html', songlinks=songlinks, name=name, sc=sc)
-
-@app.route('/me')
-def me():    
-    name = session.get('name')
-    return name
+#     scheight = .1
+#     while scheight < 9.9:
+#         driver.execute_script("window.scrollTo(0, document.body.scrollHeight/%s);" % scheight)
+#         scheight += .01
+#     #scrolls through the entire webpage so that all the songs are found, not just the first 10
+#     elem = driver.find_element_by_tag_name('a')
+#     for x in driver.find_elements_by_class_name('soundTitle__title'):
+#     #finds the link to each song of each user
+#         songlinks.append(x.get_attribute('href'))
+#     #stores this in a list
+#     driver.quit()
+#     return render_template('sclinks.html', songlinks=songlinks, name=name, sc=sc)
 
 @app.route('/soundcloud', methods= ['POST','GET'])
 def scform():
@@ -285,30 +300,13 @@ def yoursc():
         return parseSoundcloud(x)
  
 
-@app.route('/my/<sc>')
-def my(sc):
-    name = session.get('name')
-
-
-    x = sc
-    return parseSoundcloud(x)
-
-@app.route('/api')
-def api():
-    #client = soundcloud.Client(client_id='6d3KZ6G4o4U0GLCiznHCjbQrT2Ee90cn', client_secret='Wsx3mWNnRVSScuVBzwSiAb6HnbhcCsno', redirect_uri='http://www.jamesroeser.com')
-    # client = soundcloud.Client(access_token='YOUR_ACCESS_TOKEN')
-    # SC.get('/tracks/293', function(track) {SC.oEmbed(track.permalink_url, document.getElementById('player'));})
-    #tracks_json = file_get_contents('http://api.soundcloud.com/isthatfree/tracks.json?client_id=6d3KZ6G4o4U0GLCiznHCjbQrT2Ee90cn');
-    #sx = client.get('/users/isthatfree/tracks')
-    #print client.get('/me').username
-    #return (tracks_json)
-
-    # api = "http://api.soundcloud.com/resolve.json?url=https://soundcloud.com/core-rex/tracks&client_id=6d3KZ6G4o4U0GLCiznHCjbQrT2Ee90cn"
-    # r = requests.get(api)
-    # print('afdsafda',r)
-    # #return (sx)
-
-    pass
+@app.route('/myaccount/<sc>')
+def myaccount(sc):
+    # name = session.get('name')
+    # x = sc
+    print('sc-----', sc)
+    return my_stream_codes(sc)
+    #return parseSoundcloud(x)
 
 @app.errorhandler(404)
 def pageNotFound(error):

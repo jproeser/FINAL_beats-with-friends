@@ -13,8 +13,8 @@
 h1 {color:#E3DBCC;text-align:center;font-size:35px;font-family:Tahoma;}
 h2 {color:#31C3E9;text-align:center;font-size:25px;font-family:Tahoma;}
 h3 {color:#082026;text-align:center;font-size:23px;font-family:Tahoma;}
-h4 {color:#082026;text-align:center;font-size:18px;font-family:Tahoma;}
-p {color:#082026;text-align:center;font-size:15px;font-family:Tahoma;}
+h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
+p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 </style>
 
 
@@ -24,19 +24,19 @@ p {color:#082026;text-align:center;font-size:15px;font-family:Tahoma;}
 
 <h1>Hey {{ name }}! </h1>
 <br/>
-<h3>You SoundCloud Username is {{ sc }}! and zipcode is {{ zipcode }}</h3>
+<h3>Your SoundCloud Username is {{ sc }}! </h3>
+<h4>The zipcode you've associated with {{ sc }} is {{ zipcode }}</h4>
 
 
 
 <h4><br/> <br/> <i> Click <a href="{{ soundcloud }}">here</a> to open your soundcloud account </i></h4>
 
-<p><i>( or click the button below )</p></i>
 
 
 <h4><button onclick="window.location.href='{{ soundcloud }}'" style="text-align:center;height: 35px; width: 120px ">My Soundcloud</button></h4>
 
 
-<h4><br/> <br/> <i> Click <a href="http://localhost:5000/my/{{ sc }}">here</a> if you'd like to generate a list of links to songs on your SoundCloud account </i></h4>
+<h4><br/> <br/> <i> Click <a href="http://localhost:5000/myaccount/{{ sc }}">here</a> if you'd like to generate a list of links to songs on your SoundCloud account </i></h4>
 <p><i>( Please note, it will take a few moments to load )</p></i>
 
 

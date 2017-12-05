@@ -6,8 +6,8 @@
 h1 {color:#E3DBCC;text-align:center;font-size:35px;font-family:Tahoma;}
 h2 {color:#31C3E9;text-align:center;font-size:25px;font-family:Tahoma;}
 h3 {color:#082026;text-align:center;font-size:23px;font-family:Tahoma;}
-h4 {color:#082026;text-align:center;font-size:18px;font-family:Tahoma;}
-p {color:#082026;text-align:center;font-size:15px;font-family:Tahoma;}
+h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
+p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 </style>
 
 <div align="center">
@@ -24,36 +24,18 @@ function goBack() {
     window.history.back();
 }
 </script>
-<br>
-<h4>Here are the statistics for your SoundCloud, <i>{{ sc }}</i> </h3>
 
-    {% for x in followers %}
 
-		<p>{{ x }}<br></br></p>
-
-    {% endfor %}
-
-	{% if 'more' in moreorless %}
-		<h3> CONGRATS, you have over 100 followers!</h3>
-    {% endif %}
-	
-	{% if 'less' in moreorless %}
-		<h3> Sorry, you have under 100 followers</h3>
-
-    {% endif %}
-
-<br>
-
-<h4>Here are the links to songs we found on your profile </h3>
+<h4>Here are all the public songs on your profile </h3>
 
 <ul>
     {% for r in songlinks %}
 
 		<iframe width="400" height="400" scrolling="no" frameborder="yes"
-		src="https://w.soundcloud.com/player/?url={{ r }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true">
+		src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ r }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true">
 		</iframe>
 
-
+<!-- https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/320780506 -->
 
     {% endfor %}
 
