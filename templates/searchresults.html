@@ -3,7 +3,7 @@
 <body bgcolor="#C79B71">
 
 <style>
-h1 {color:#E3DBCC;text-align:center;font-size:35px;font-family:Tahoma;}
+h1 {color:#FFF2E3;text-align:center;font-size:35px;font-family:Tahoma;}
 h2 {color:#31C3E9;text-align:center;font-size:25px;font-family:Tahoma;}
 h3 {color:#082026;text-align:center;font-size:23px;font-family:Tahoma;}
 h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
@@ -14,19 +14,30 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 
 <div style="text-align:center;">
 
+<button onclick="goBack()" style="text-align:center;">Go Back</button>
+<button onclick="window.location.href='/'" style="text-align:center;">Go Home</button>
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
 
 <h3>The zipcode you entered was {{ searchzip }}! </h3>
 <h3>The radius you entered was {{ searchradius }}! </h3>
 <h3>The city you searched was {{ city }}! </h3>
 <h3>The zips in your radius are: {{ allzips }}! </h3>
 
+<h4>Here are all the public songs on your profile </h3>
+
+<p id="demo" onclick="myFunction()">Click me to change my text color.</p>
 
 
-<button onclick="goBack()" style="text-align:center;">Go Back</button>
-<button onclick="window.location.href='/'" style="text-align:center;">Go Home</button>
+<ul>
+    {% for r in songlinks %}
+		<iframe width="400" height="400" scrolling="no" frameborder="yes"
+		src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ r }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true">
+		</iframe>
+    {% endfor %}
+</ul>
 
-<script>
-function goBack() {
-    window.history.back();
-}
-</script>
+

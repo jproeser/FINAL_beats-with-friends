@@ -1,9 +1,11 @@
+<element onclick="script">
+
 <center><img src="/static/localbeats.png"  position = "bottom" width="200;" height="200;" padding="auto" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
 
 <body bgcolor="#C79B71">
 
 <style>
-h1 {color:#E3DBCC;text-align:center;font-size:35px;font-family:Tahoma;}
+h1 {color:#FFF2E3;text-align:center;font-size:35px;font-family:Tahoma;}
 h2 {color:#31C3E9;text-align:center;font-size:25px;font-family:Tahoma;}
 h3 {color:#082026;text-align:center;font-size:23px;font-family:Tahoma;}
 h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
@@ -14,7 +16,7 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 
 <div style="text-align:center;">
 
-<h3>Hey {{ name }}! </h3>
+
 
 <button onclick="goBack()" style="text-align:center;">Go Back</button>
 <button onclick="window.location.href='/'" style="text-align:center;">Go Home</button>
@@ -26,18 +28,33 @@ function goBack() {
 </script>
 
 
-<h4>Here are all the public songs on your profile </h3>
+
+
+
+
 
 <ul>
     {% for r in songlinks %}
-
 		<iframe width="400" height="400" scrolling="no" frameborder="yes"
 		src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ r }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true">
 		</iframe>
-
-<!-- https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/320780506 -->
-
     {% endfor %}
-
-
 </ul>
+
+<h4>YO!</h4>
+
+<iframe width="400" height="400" scrolling="no" frameborder="yes"
+src="https://soundcloud.com/phillawav/tracks/&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true">
+</iframe>
+
+ <script type="text/javascript" src="http://stratus.sc/stratus.js"></script>
+ <script type="text/javascript">
+   $(document).ready(function(){
+     $.stratus({
+       links: 'http://soundcloud.com/foofighters/sets/wasting-light'
+     });
+   });
+ </script>
+
+ <iframe width="100%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/92941169&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+

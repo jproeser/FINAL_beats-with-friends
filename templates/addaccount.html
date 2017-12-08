@@ -3,7 +3,7 @@
 <body bgcolor="#C79B71">
 
 <style>
-h1 {color:#E3DBCC;text-align:center;font-size:35px;font-family:Tahoma;}
+h1 {color:#FFF2E3;text-align:center;font-size:35px;font-family:Tahoma;}
 h2 {color:#31C3E9;text-align:center;font-size:25px;font-family:Tahoma;}
 h3 {color:#082026;text-align:center;font-size:23px;font-family:Tahoma;}
 h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
@@ -14,14 +14,13 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 {% block content %}
   <div style="text-align:center;">
 
-  <h1>Add your SoundCloud Account!</h1>
-  <form method="POST" action="http://localhost:5000/welcome">
+  <h1>Add a SoundCloud User!</h1>
+  <form method="POST">
 
       {{ form.hidden_tag() }}
       {% for message in get_flashed_messages() %}
       {{ message }}
       {% endfor %}
-      <p>{{ form.name.label }}{{ form.name() }}</p>
       <p>{{ form.soundcloud.label }}{{ form.soundcloud() }}</p>
       <p>{{ form.zipcode.label }}{{ form.zipcode() }}</p>
 

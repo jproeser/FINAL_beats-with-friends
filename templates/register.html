@@ -1,0 +1,32 @@
+<center><img src="/static/localbeats.png"  position = "top" width="200;" height="200;" padding= "auto;" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
+
+<body bgcolor="#C79B71">
+
+<style>
+h1 {color:#FFF2E3;text-align:center;font-size:35px;font-family:Tahoma;}
+h2 {color:#31C3E9;text-align:center;font-size:25px;font-family:Tahoma;}
+h3 {color:#082026;text-align:center;font-size:23px;font-family:Tahoma;}
+h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
+p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
+</style>
+<p style="text-align:center;">
+<h1>Sign up for a new user account</h1>
+
+<form method="POST"><p style="text-align:center;">
+	{{ form.hidden_tag() }}
+	<br>
+	{{ form.email.label }} 
+	<br>
+	{{ form.email() }}
+	<br><br>
+    {{ form.password.label }} 
+    <br>
+    {{ form.password() }}
+    <br><br>
+    {{ form.password2.label }} 
+    <br>
+    {{ form.password2() }}
+	<br><br>
+	
+	{{ form.submit() }}
+</form>

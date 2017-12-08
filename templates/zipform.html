@@ -1,21 +1,225 @@
-<center><img src="/static/localbeats.png"  position = "bottom" width="200;" height="200;" padding="auto" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
+<!DOCTYPE html>
 
 <body bgcolor="#C79B71">
 
+<html>
+<head>
 <style>
-h1 {color:#E3DBCC;text-align:center;font-size:35px;font-family:Tahoma;}
+
+.button1 {
+    background-color: #FFF2E3; 
+    color: black; 
+    border: 2px solid #6085B2;
+    height: 50px;
+    width: 120px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family:Tahoma;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button1:hover {
+    background-color: #6085B2;
+    color: white;
+
+    height: 50px;
+    width: 120px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family:Tahoma;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;    
+}
+
+.button2 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button2:hover {
+    background-color: #008CBA;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button3 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #f44336;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button3:hover {
+    background-color: #f44336;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+
+<!-- 
+<button class="button button1">Green</button>
+<button class="button button2">Blue</button>
+<button class="button button3">Red</button>
+<button class="button button4">Gray</button>
+<button class="button button5">Black</button>
+ -->
+</body>
+</html>
+
+
+<style>
+h1 {color:#FFF2E3;text-align:center;font-size:35px;font-family:Tahoma;}
 h2 {color:#31C3E9;text-align:center;font-size:25px;font-family:Tahoma;}
 h3 {color:#082026;text-align:center;font-size:23px;font-family:Tahoma;}
 h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
 p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 </style>
 
+<center><img src="/static/localbeats.png"  top = "0px"; position = "top" width="200;" height="200;" padding= "auto;" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
+
+{% if current_user.is_authenticated %}
+    <button onclick="{{ url_for('logout') }}" >Sign Out {{current_user.username}}</a>
+{% else %}
+    <button class="button button1" onclick="window.location.href='/login'" style="float: left;margin-right:auto;margin-left:40%;display:block;margin-top:0px;margin-bottom:0%;" >Sign In</button></h4>
+
+
+
+{% endif %}
+
+<button class="button button1" onclick="window.location.href='/adduser'" style="float: right;margin-left:auto;margin-right:40%;display:block;margin-top:0px;margin-bottom:0%; " >Add SC User</button></h4>
+
+
+<br><br><br>
+
+
 
 <p style="text-align:center;">
 
+
+
+
+<div>
+{% for message in get_flashed_messages() %}
+{{ message }}
+{% endfor %}
+</div>
+
+
 <h1>Connect with your local SoundCloud community</h1>
 
-<h3>Search for SoundCloud users near you</h2>
+
+
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Marker Clustering</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 75%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 75%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+
+      function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: {lat: 39.0902, lng: -95.7129}
+        });
+
+        // Create an array of alphabetical characters used to label the markers.
+        // var labels = {{ alllabels }};
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function(location, i) {
+          return new google.maps.Marker({
+            position: location, label: ('')
+            
+          });
+        });
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
+      var locations = {{ x }}
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArkbAZwyZAAeObAb8mRNZ8Kc8zXpr1Doc&callback=initMap">
+    </script>
+  </body>
+</html>
+
+<!-- 
+https://developers.google.com/chart/interactive/docs/gallery/map#customizing-markers
+
+ -->
+<!-- https://developers.google.com/maps/documentation/javascript/marker-clustering
+ -->
+
+<h3>Search for SoundCloud users near you</h3>
 
 
 
@@ -39,6 +243,9 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
   </form>
 {% endblock %}
 
-<h4><br><br><br><br><br><button onclick="window.location.href='/signin'" style="text-align:center;height: 35px; width: 120px ">Add your account</button></h4>
+
+
+<br><br><br><br>
+
 
 

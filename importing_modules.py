@@ -74,4 +74,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # Imports for login management
 from flask_login import LoginManager, login_required, logout_user, login_user, UserMixin, current_user
+import gmplot
+from gmplot import *
+import googlemaps
 
