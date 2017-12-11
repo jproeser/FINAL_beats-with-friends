@@ -121,15 +121,15 @@ h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
 p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 </style>
 
+<p style="text-align:center;">
+
 <center><img src="/static/localbeats.png"  top = "0px"; position = "top" width="200;" height="200;" padding= "auto;" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
 
 {% if current_user.is_authenticated %}
-    <button onclick="{{ url_for('logout') }}" >Sign Out {{current_user.username}}</a>
+<!--     <button onclick="{{ url_for('logout') }}" >Sign Out {{current_user.username}}</a> -->
+    <button class="button button1" onclick="window.location.href='/logout'" style="float: left;margin-right:auto;margin-left:40%;display:block;margin-top:0px;margin-bottom:0%;" >Log Out</button></h4>   
 {% else %}
     <button class="button button1" onclick="window.location.href='/login'" style="float: left;margin-right:auto;margin-left:40%;display:block;margin-top:0px;margin-bottom:0%;" >Sign In</button></h4>
-
-
-
 {% endif %}
 
 <button class="button button1" onclick="window.location.href='/adduser'" style="float: right;margin-left:auto;margin-right:40%;display:block;margin-top:0px;margin-bottom:0%; " >Add SC User</button></h4>
@@ -139,15 +139,16 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 
 
 
+
+
+  
 <p style="text-align:center;">
-
-
-
 
 <div>
 {% for message in get_flashed_messages() %}
-{{ message }}
+<center><h3>{{ message }}</h3></center>
 {% endfor %}
+
 </div>
 
 
@@ -232,8 +233,8 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
   <form method="POST" action="http://localhost:5000/searchresults">
 
       {{ form.hidden_tag() }}
-      {% for message in get_flashed_messages() %}
-      {{ message }}
+      <center>{% for message in get_flashed_messages() %}</center>
+      <h3>{{ message }}</h3>
       {% endfor %}
       <p>{{ form.searchzip.label }}{{ form.searchzip() }}</p>
       <p>{{ form.searchradius.label }}{{ form.searchradius() }}</p>

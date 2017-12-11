@@ -9,7 +9,7 @@ app.debug = True
 app.static_folder = 'static'
 app.config['SECRET_KEY'] = 'hardtoguessstring'
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL') or "postgresql://localhost/lb3"  # TODO: decide what your new database name will be, and create it in postgresql, before running this new application
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL') or "postgresql://localhost/lb9"  # TODO: decide what your new database name will be, and create it in postgresql, before running this new application
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -77,21 +77,23 @@ zips_and_accounts = db.Table('zips_and_accounts',db.Column('zipcode_id', db.Inte
 class SCaccount(db.Model):
     __tablename__ = "scaccounts"
     id = db.Column(db.Integer, primary_key=True)
-    sc_url = db.Column(db.String(64), unique=True)
-    zipcodes = db.relationship('Zipcode',secondary=zips_and_accounts,backref=db.backref('scaccounts',lazy='dynamic'),lazy='dynamic')
-    sc_username = db.Column(db.String(64), unique=True) #is this ok even if regex
+    sc_url = db.Column(db.String(256), unique=True)
+    # zipcodes = db.relationship('Zipcode',secondary=zips_and_accounts,backref=db.backref('scaccounts',lazy='dynamic'),lazy='dynamic')
+    sc_username = db.Column(db.String(128)) #is this ok even if regex
 
 class Zipcode(db.Model):
     __tablename__ = "zipcodes"
     id = db.Column(db.Integer, primary_key=True)
-    sc_zip = db.Column(db.Integer, db.ForeignKey("scaccounts.id"))
+    sc_zip = db.Column(db.Integer)
+    zip_users = db.relationship('SCaccount',secondary=zips_and_accounts,backref=db.backref('zipcodes',lazy='dynamic'),lazy='dynamic')
 
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     # username = db.Column(db.String(255), unique=True, index=True)
-    ###How to make email the username?
     email = db.Column(db.String(64), unique=True, index=True)
+    sc_zip_id = db.Column(db.Integer, db.ForeignKey("zipcodes.id"))
+    sc_username_id = db.Column(db.Integer, db.ForeignKey("scaccounts.id"))
     # collection = db.relationship('PersonalCollection', backref='User')
     password_hash = db.Column(db.String(128))
     account_ids = db.Column(db.Integer, db.ForeignKey("scaccounts.id")) ##or db.relationship('SCaccount', backref='User')
@@ -103,6 +105,8 @@ class User(UserMixin, db.Model):
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
+
+
 
     @password.setter
     def password(self, password):
@@ -155,7 +159,11 @@ def load_user(user_id):
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email:', validators=[Required(),Length(1,64),Email()])
+
     #username = StringField('Username:',validators=[Required(),Length(1,64),Regexp('^[A-Za-z][A-Za-z0-9_.]*$',0,'Usernames must have only letters, numbers, dots or underscores')])
+    soundcloud = StringField('<h4>SoundCloud<i> URL</h4></i><p></p><br/>', [Required(message="required"),validators.Regexp('^https://soundcloud.com/', message="Please enter a valid account")])
+    zipcode = StringField('<h4>Zipcode<br/></h4>', [Required()])
+
     password = PasswordField('Password:',validators=[Required(),EqualTo('password2',message="Passwords must match")])
     password2 = PasswordField("Confirm Password:",validators=[Required()])
     submit = SubmitField('Register User')
@@ -175,12 +183,43 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log In')
 
-
 class AddSC(FlaskForm):
     # name = StringField('<h4>What is your name?<br/></h4>', [Required()])
     soundcloud = StringField('<h4>SoundCloud<i> URL</h4></i><p></p><br/>', [Required(message="required"),validators.Regexp('^https://soundcloud.com/', message="Please enter a valid account")])
     zipcode = StringField('<h4>Zipcode<br/></h4>', [Required()])
     submit = SubmitField('Submit')
+
+
+
+#     form = AddSC(request.form)
+
+#     #name = form.name.data
+#     soundcloud = form.soundcloud.data
+#     zipcode = form.zipcode.data
+
+#     search = ZipcodeSearchEngine()
+#     lookupzip = search.by_zipcode(zipcode)
+#     city = lookupzip.City
+
+#     x = re.match('^https://soundcloud.com/',soundcloud)    
+
+#     if x is None and zipcode is "":
+#         flash('Please fill out the form before submitting!')    
+#         return redirect(url_for('signin'))
+#     elif soundcloud is "":
+#         flash('Please enter your SoundCloud URL!')   
+#         return redirect(url_for('signin'))        
+#     # elif name is "":
+#     #     flash('Please enter your name!')   
+#     #     return redirect(url_for('signin'))
+#     elif city == None:
+#         flash('Please enter a valid 5-digit zip code')
+#         return redirect(url_for('signin'))
+#     elif x is None:
+#         flash('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
+#         return redirect(url_for('signin'))
+
+
 
 class ZipSearchForm(FlaskForm):
     searchzip = StringField('<h4>Zipcode</h4>', [Required()])
@@ -188,6 +227,7 @@ class ZipSearchForm(FlaskForm):
     submit = SubmitField('Submit')
 
 ##################################################################
+
 
 # def get_or_create_user(db_session,fullurl):
 #     newuser = db_session.query(User).filter_by(email=email).first()
@@ -201,13 +241,20 @@ class ZipSearchForm(FlaskForm):
 #         return newuser
 
 
-def get_or_create_zipcode(db_session,sc_zip):
+def get_or_create_zipcode(db_session,sc_zip, sc):
     zipcode = db_session.query(Zipcode).filter_by(sc_zip=sc_zip).first()
     if zipcode:
+        x = []
+        query.
+        
+        zipcode.zip_users.append(sc)        
+        db_session.add(zipcode)
+        db_session.commit()
         ##HOW to flash message, prompt continue or register button????
         return zipcode
     else:
         zipcode = Zipcode(sc_zip=sc_zip)
+        zipcode.zip_users.append(sc)
         db_session.add(zipcode)
         db_session.commit()
         return zipcode
@@ -217,7 +264,8 @@ def get_or_create_scaccount(db_session,sc_url, sc_zip, sc_username):
     sc = db_session.query(SCaccount).filter_by(sc_url=sc_url).first()
     #zipcode = get_or_create_zipcode(db_session, sc_zip)
     if sc:# and zipcode:
-        ###### WILL THIS BE IN THE FORMAT OF A LIST?
+        z = get_or_create_zipcode(db_session, sc_zip, sc)
+        # #### WILL THIS BE IN THE FORMAT OF A LIST?
         # zipcodes = []
         # zipcodes.append(db_session.query(Zipcode).filter_by(sc_zip=sc_zip).first())
         # numzips = len(zipcodes)
@@ -226,12 +274,14 @@ def get_or_create_scaccount(db_session,sc_url, sc_zip, sc_username):
         # if numzips <= 3:
         #     ##### will this append it????
         #     sc.zipcodes.append(get_or_create_zipcode (sc_zip=sc_zip))
-        # ##HOW to flash message, prompt continue or register button????
+        # HOW to flash message, prompt continue or register button????
 
         return sc
     else:
-        sc = SCaccount(sc_url=sc_url)#, sc_username=sc_username)
+        sc = SCaccount(sc_url=sc_url, sc_username=sc_username)
         #zipcodes = get_or_create_zipcode(db_session, sc_zip)
+        z = get_or_create_zipcode(db_session, sc_zip, sc)
+        print('sc---------', sc.sc_username)
         db_session.add(sc)
         db_session.commit()
         return sc
@@ -249,7 +299,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
-            return redirect(request.args.get('next') or url_for('index'))
+            return redirect(request.args.get('next') or url_for('useraccount'))
         flash('Invalid username or password.')
     return render_template('login.html',form=form)
 
@@ -258,13 +308,13 @@ def login():
 def logout():
     logout_user()
     flash('You have been logged out')
-    return redirect(url_for('index'))
+    return redirect(url_for('useraccount'))
 
 @app.route('/register',methods=["GET","POST"])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(email=form.email.data,username=form.username.data,password=form.password.data)
+        user = User(email=form.email.data,soundcloud = form.soundcloud.data, zipcode = form.zipcode.data, password=form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('You can now log in!')
@@ -287,8 +337,35 @@ def resolve_profile_tracks_url(username):
         print ("Cannot find the specified user.")
     else:
         resolved_profile_uri = json.loads(r.text)['location']
-        print ('resolved url------', resolved_profile_uri)
+        #print ('resolved url------', resolved_profile_uri)
         return resolved_profile_uri
+
+def resolve_profile(username):
+    r = requests.get(
+        'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/{}&client_id={}'.format(username, CLIENTID), allow_redirects=False)
+    if 'errors' in json.loads(r.text):
+        print ("Cannot find the specified user.")
+    else:
+        accountinfo = json.loads(r.text)['location']
+        #print ('resolved url------', resolved_profile_uri)
+        #print('\n soc LINKS', x)
+        return accountinfo   
+
+
+
+def resolve_social_links(username):
+    r = requests.get(
+        'https://api.soundcloud.com/users/{}/web-profiles.json?client_id={}'.format(username, CLIENTID), allow_redirects=False)
+    if 'errors' in json.loads(r.text):
+        print ("Cannot find the specified user.")
+    else:
+        web_profiles = json.loads(r.text)['location']
+        #print ('resolved url------', resolved_profile_uri)
+        #print('\n soc LINKS', x)
+        return web_profiles   
+
+
+
 
 def get_profile_tracks(tracks_url):
     r = requests.get(tracks_url)
@@ -297,6 +374,71 @@ def get_profile_tracks(tracks_url):
 def get_stream_link(stream_url):
     unique_id = stream_url[21:][:-6]
     return 'http://media.soundcloud.com/stream/{}'.format(unique_id)
+
+def get_actual_username(a):
+    r = requests.get(a)
+    return json.loads(r.text)
+
+def get_web_profiles(a):
+    r = requests.get(a)
+    return json.loads(r.text)
+
+
+def get_sc_id(username):
+    sc_id = username
+
+    return sc_id
+
+
+def get_sc_account_id(username):
+    a = resolve_profile(username)
+    openurl = get_actual_username(a)
+    sc_account_id = openurl['id']
+
+    return sc_account_id
+
+def get_sc_account_username(username):
+    a = resolve_profile(username)
+    openurl = get_actual_username(a)
+
+    sc_account_username = openurl['username']
+
+    return sc_account_username    
+
+
+#######
+def get_sc_account_web_profiles(username):
+    a = resolve_social_links(username)
+    openurl = get_web_profiles(a)
+    print('\n SOC OPENURL', openurl)
+    x = openurl['url']
+
+    return x    
+########
+
+def get_all_user_data(username):
+    tracks_url = resolve_profile_tracks_url(username)
+    track_listing = get_profile_tracks(tracks_url)
+    #socials = get_social_links(username)
+    songlinks=[]
+    numsongs = 0
+    for track in track_listing:
+        stream_link = get_stream_link(track['stream_url'])
+        numsongs +=1
+        songlinks.append(re.findall('tracks/(\d+)', stream_link))
+        #print('SONGLINKS..........', songlinks, user.sc_username)
+        #return render_template('zipsearchresults.html', songlinks=songlinks)
+
+    songlinks = list(chain.from_iterable(songlinks))
+    #return songlinks
+    sc_account_id = get_sc_account_id(username)
+    sc_account_username = get_sc_account_username(username)
+
+    social = get_sc_account_web_profiles(username)
+    print('|||||||||||||         ',username,'num songs', numsongs, '|||||||| songlinks',songlinks)
+    print('\nID: ', sc_account_id, '\nActual Username: ',sc_account_username)
+    print('\n\nSOCIAL------', social)
+    return songlinks
 
 @app.route('/')
 
@@ -321,15 +463,8 @@ def zipsearch():
     lng = 0
     simpleForm = ZipSearchForm()
     x = '[{lat: 42.105579399999996, lng: -87.74680710000001},{lat: 42.08057429999999, lng: -87.7320368},{lat: 42.060010999999996, lng: -87.6926257},{lat: 42.0480869, lng: -87.7147986},{lat: 42.0105286, lng: -87.6926257},{lat: 42.0085328, lng: -87.84515270000001},{lat: 41.971106799999994, lng: -87.70248169999998},{lat: 42.2660881, lng: -83.7146001},{lat: 42.2129167, lng: -83.7305392},{lat: 42.2728525, lng: -83.57096399999998},{lat: 42.2253803, lng: -83.3415334},{lat: 39.8086537, lng: -104.8337879},{lat: 39.6999073, lng: -104.93304479999999},{lat: 40.75368539999999, lng: -73.9991637},{lat: 40.7750791, lng: -73.9932872},{lat: 33.96978970000001, lng: -118.24681480000001}]'
-    #x = str(x)
-    print(x)
-    # plotpoints=[]
-    # x = '-31.563910'
-    # y = '147.154312'
-    # plotpoints = [
-    #   ]
-    labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
+    labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     ###ACCESS USER ZIPS
 
     alllabels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -338,12 +473,17 @@ def zipsearch():
     search = make_response(render_template('zipform.html', form=simpleForm, labels=labels, alllabels=alllabels, allgeo=allgeo, x=x))
     form = ZipSearchForm(request.form)
 
-
-
     return search
+
+@app.route('/useraccount')
+def useraccount():
+    sc_username = 'yo'
+    return render_template('useraccount.html', sc_username=sc_username)
 
 #@app.route('/test')
 #######https://github.com/ChainsawPolice/soundcloud-page-downloader/blob/master/soundcloud-downloader.py
+
+
 def my_stream_codes(soundcloud):
     #name = session.get('name')
     username = soundcloud
@@ -361,15 +501,14 @@ def my_stream_codes(soundcloud):
 @app.route('/adduser',methods=['GET', 'POST'])
 def adduser():
     form_adduser = AddSC()
-        # sc_account = SCaccount(sc_url = soundcloud ,sc_username=sc_username, zipcodes=zipcode)
-        # db.session.add(sc_account)
-        # db.session.commit()
-    #form = AddSC(request.form)
+    #     # sc_account = SCaccount(sc_url = soundcloud ,sc_username=sc_username, zipcodes=zipcode)
+    #     # db.session.add(sc_account)
+    #     # db.session.commit()
+    # #form = AddSC(request.form)
 
 
-
-    # soundcloud = simpleForm.soundcloud.data
-    # zipcode = simpleForm.zipcode.data
+    # soundcloud = form_adduser.soundcloud.data
+    # zipcode = form_adduser.zipcode.data
 
     # search = ZipcodeSearchEngine()
     # lookupzip = search.by_zipcode(zipcode)
@@ -399,8 +538,10 @@ def adduser():
         # soundcloud=session.get('soundcloud')
         # session['zipcode'] = form_adduser.zipcode.data
         # zipcode=session.get('zipcode')
-        sc = str(soundcloud)
+
+        sc = str(form_adduser.soundcloud.data)
         sc_username = sc.replace("https://soundcloud.com/", "")
+        print('**********************',sc_username)
 
         get_or_create_scaccount(db_session=db.session, sc_url = form_adduser.soundcloud.data ,sc_zip = form_adduser.zipcode.data, sc_username = sc_username)
         
@@ -409,22 +550,27 @@ def adduser():
     return render_template('addaccount.html', form=form_adduser) 
 
 ##??? how to send the username to the next form
-@app.route('/addanother',methods=['GET', 'POST'])
-def addanother():
-    sc_username = 'winandwoo'
+@app.route('/addanother/<sc_username>',methods=['GET', 'POST'])
+def addanother(sc_username):
+    print('++++++++', sc_username)
+    # sc_username = 'winandwoo'
     form_adduser = AddSC()
     
-    # soundcloud=session.get('soundcloud')
+    # soundcloud=form_adduser.soundcloud.data
     # sc = str(soundcloud)
     # sc_username = sc.replace("https://soundcloud.com/", "")
 
     if form_adduser.validate_on_submit():
 
-        # #soundcloud=session.get('soundcloud')
-        # sc = str(soundcloud)
-        # sc_username = sc.replace("https://soundcloud.com/", "")
+        soundcloud=form_adduser.soundcloud.data
+        sc = str(soundcloud)
+        sc_username = sc.replace("https://soundcloud.com/", "")
+
+        print('1*********************',sc_username)
 
         get_or_create_scaccount(db_session=db.session, sc_url = form_adduser.soundcloud.data ,sc_zip = form_adduser.zipcode.data, sc_username = sc_username)
+        
+        print('2********************',sc_username)
         
         return redirect(url_for('addanother', sc_username = sc_username))
 
@@ -600,9 +746,41 @@ def searchresults():
 
         # flash('user added')
 
+@app.route('/test')
+
+# class SCaccount(db.Model):
+#     __tablename__ = "scaccounts"
+#     id = db.Column(db.Integer, primary_key=True)
+#     sc_url = db.Column(db.String(256), unique=True)
+#     sc_username = db.Column(db.String(128)) #is this ok even if regex
+
+# class Zipcode(db.Model):
+#     __tablename__ = "zipcodes"
+#     id = db.Column(db.Integer, primary_key=True)
+#     sc_zip = db.Column(db.Integer)
+#     zip_users = db.relationship('SCaccount',secondary=zips_and_accounts,backref=db.backref('zipcodes',lazy='dynamic'),lazy='dynamic')
 
 
-def codes_for_all_users(searchzip, searchradius):
+
+#def all_stream_codes(sc_un):
+    # #name = session.get('name')
+    # username = sc_un
+    # tracks_url = resolve_profile_tracks_url(username)
+    # track_listing = get_profile_tracks(tracks_url)
+    # songlinks=[]
+    # for track in track_listing:
+    #     stream_link = get_stream_link(track['stream_url'])
+    #     songlinks.append(re.findall('tracks/(\d+)', stream_link))
+    # songlinks = list(chain.from_iterable(songlinks))
+    # return songlinks
+    # #print('songlinks----', songlinks)
+    # #return render_template('sclinks.html', songlinks=songlinks) #name=name)
+
+
+
+def all_usernames_in_radius():#searchzip, searchradius):
+    searchzip = '60093'
+    searchradius = '5'
 
     search = ZipcodeSearchEngine()
     lookupzip = search.by_zipcode(searchzip)
@@ -610,19 +788,67 @@ def codes_for_all_users(searchzip, searchradius):
     lat = lookupzip.Latitude
     longi = lookupzip.Longitude
 
+    print (lat)
+    print (longi)
+
     res = search.by_coordinate(lat, longi, radius=int(searchradius), returns=50)
 
     allzips = []
     for zipcode in res:
         allzips.append(zipcode.Zipcode)
+
+    sc_zips_in_radius = []
+    sc_users_in_radius = []
+
+    print('ALL ZIPS', allzips)
+
+
+    for dbzip in Zipcode.query.all():
+        for zipinradius in allzips:
+            #print ('searchzip--', zipinradius)
+            #print('dbzip----', dbzip.sc_zip)
+            if str(zipinradius) == str(dbzip.sc_zip):
+            #Matches searched zipcodes with zipcodes in database
+                print('-------------------------------MATCH')
+                for user in dbzip.zip_users:
+                    print ('-------------------------------', user.sc_username)
+                    #finds usernames for users in zip search
+                    sc_users_in_radius.append(user.sc_username)
+    print('*!*!*!*!*!!', sc_users_in_radius) 
+
+    all_song_codes_in_radius = []
+    for username in sc_users_in_radius:
+        x = get_all_user_data(username)
+        all_song_codes_in_radius.append(x)
+
+    # for username in sc_users_in_radius:
+    #     #print(sc_un)
+    #     #x = sc_un
+    #     #print()
+    #     #all_song_codes_in_radius.append(all_stream_codes(sc_un=sc_un))
+
+    #     #username = x
+    #     tracks_url = resolve_profile_tracks_url(username)
+    #     #print('tracks_urltracks_urltracks_urltracks_urltracks_urltracks_urltracks_url', tracks_url)
+    #     track_listing = get_profile_tracks(tracks_url)
+    #     #print('track_listingtrack_listingtrack_listingtrack_listingtrack_listingtrack_listing',track_listing)
+    #     songlinks=[]
+    #     for track in track_listing:
+    #         stream_link = get_stream_link(track['stream_url'])
+    #         songlinks.append(re.findall('tracks/(\d+)', stream_link))
+    #         #print('SONGLINKS..........', songlinks, user.sc_username)
+    #         #return render_template('zipsearchresults.html', songlinks=songlinks)
+
+    #     songlinks = list(chain.from_iterable(songlinks))
+    #     #return songlinks
+    #     all_song_codes_in_radius.append(songlinks)
+
+    #     #all_song_codes_in_radius = list(chain.from_iterable(all_song_codes_in_radius))
+    # print('################################', all_song_codes_in_radius)
+    # #return (all_song_codes_in_radius)
+
     
-    # allusers = []
-    # for x in          
-
-    songs = Song.query.all()
-
-   # my_stream_codes(sc)
-
+    return render_template('zipsearchresults.html', sc_users_in_radius=sc_users_in_radius)
 
 
 

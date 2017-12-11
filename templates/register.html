@@ -13,11 +13,20 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 <h1>Sign up for a new user account</h1>
 
 <form method="POST"><p style="text-align:center;">
+	<center>
 	{{ form.hidden_tag() }}
 	<br>
 	{{ form.email.label }} 
 	<br>
 	{{ form.email() }}
+	<br>
+	{{ form.soundcloud.label }} 
+	<br>
+	{{ form.soundcloud() }}
+	<br>
+	{{ form.zipcode.label }} 
+	<br>
+	{{ form.zipcode() }}	
 	<br><br>
     {{ form.password.label }} 
     <br>
@@ -29,4 +38,6 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 	<br><br>
 	
 	{{ form.submit() }}
+	<center>
+</p>
 </form>
