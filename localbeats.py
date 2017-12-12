@@ -185,39 +185,33 @@ class LoginForm(FlaskForm):
 
 class AddSC(FlaskForm):
     # name = StringField('<h4>What is your name?<br/></h4>', [Required()])
-    soundcloud = StringField('<h4>SoundCloud<i> URL</h4></i><p></p><br/>', [Required(message="required"),validators.Regexp('^https://soundcloud.com/', message="Please enter a valid account")])
-    zipcode = StringField('<h4>Zipcode<br/></h4>', [Required()])
-    submit = SubmitField('Submit')
+    soundcloud = StringField('<h4>SoundCloud<i> URL</h4></i><p></p><br/>', validators=[Required()])#, Regexp('^https://soundcloud.com/','Please enter a valid URL')])
+    def validate_soundcloud(self,field):
+        soundcloud=field.data
+        x = re.match('^https://soundcloud.com/',soundcloud)
+        if x is None:
+            print('aaaaaaa')  
 
+            raise ValidationError('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
+            flash ('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
+    zipcode = StringField('<h4>Zipcode<br/></h4>', validators=[Required()])
+    def validate_zipcode(self,field):
+        zipcode=field.data
+        search = ZipcodeSearchEngine()
+        lookupzip = search.by_zipcode(zipcode)
+        city = lookupzip.City        
 
+        if soundcloud is "":
+            print('xxxxxx')  
+            flash ('Please enter your SoundCloud URL!')
 
-#     form = AddSC(request.form)
-
-#     #name = form.name.data
-#     soundcloud = form.soundcloud.data
-#     zipcode = form.zipcode.data
-
-#     search = ZipcodeSearchEngine()
-#     lookupzip = search.by_zipcode(zipcode)
-#     city = lookupzip.City
-
-#     x = re.match('^https://soundcloud.com/',soundcloud)    
-
-#     if x is None and zipcode is "":
-#         flash('Please fill out the form before submitting!')    
-#         return redirect(url_for('signin'))
-#     elif soundcloud is "":
-#         flash('Please enter your SoundCloud URL!')   
-#         return redirect(url_for('signin'))        
-#     # elif name is "":
-#     #     flash('Please enter your name!')   
-#     #     return redirect(url_for('signin'))
-#     elif city == None:
-#         flash('Please enter a valid 5-digit zip code')
-#         return redirect(url_for('signin'))
-#     elif x is None:
-#         flash('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
-#         return redirect(url_for('signin'))
+            raise ValidationError('Please enter your SoundCloud URL!')
+        
+        if city == None:
+            print('xxxxxx')  
+            raise ValidationError('Please enter a valid 5-digit zip code') 
+            flash ('Please enter a valid 5-digit zip code') 
+    submit = SubmitField('Add User')
 
 
 
@@ -240,13 +234,10 @@ class ZipSearchForm(FlaskForm):
 #         db_session.commit()
 #         return newuser
 
-
 def get_or_create_zipcode(db_session,sc_zip, sc):
     zipcode = db_session.query(Zipcode).filter_by(sc_zip=sc_zip).first()
     if zipcode:
-        x = []
-        query.
-        
+
         zipcode.zip_users.append(sc)        
         db_session.add(zipcode)
         db_session.commit()
@@ -262,8 +253,10 @@ def get_or_create_zipcode(db_session,sc_zip, sc):
 ####How to get it to search for matching zip and account???
 def get_or_create_scaccount(db_session,sc_url, sc_zip, sc_username):
     sc = db_session.query(SCaccount).filter_by(sc_url=sc_url).first()
-    #zipcode = get_or_create_zipcode(db_session, sc_zip)
-    if sc:# and zipcode:
+    if sc:
+        # x = []
+        # SCaccount.query.filter_by(sc_url=sc_url)
+        
         z = get_or_create_zipcode(db_session, sc_zip, sc)
         # #### WILL THIS BE IN THE FORMAT OF A LIST?
         # zipcodes = []
@@ -354,14 +347,14 @@ def resolve_profile(username):
 
 
 def resolve_social_links(username):
-    r = requests.get(
-        'https://api.soundcloud.com/users/{}/web-profiles.json?client_id={}'.format(username, CLIENTID), allow_redirects=False)
+    r = requests.get('https://api.soundcloud.com/users/{}/web-profiles.json?client_id={}'.format(username, CLIENTID), allow_redirects=False)
     if 'errors' in json.loads(r.text):
         print ("Cannot find the specified user.")
     else:
-        web_profiles = json.loads(r.text)['location']
+        web_profiles = json.loads(r.text)#['location']
         #print ('resolved url------', resolved_profile_uri)
         #print('\n soc LINKS', x)
+        #print('\n WEBPROFILES--------------\n', web_profiles)
         return web_profiles   
 
 
@@ -400,20 +393,27 @@ def get_sc_account_id(username):
 def get_sc_account_username(username):
     a = resolve_profile(username)
     openurl = get_actual_username(a)
-
     sc_account_username = openurl['username']
-
     return sc_account_username    
 
-
-#######
-def get_sc_account_web_profiles(username):
+def get_sc_account_facebook(username):
     a = resolve_social_links(username)
-    openurl = get_web_profiles(a)
-    print('\n SOC OPENURL', openurl)
-    x = openurl['url']
-
-    return x    
+    #print('\n\n\n\n\n\naaaaaaaa',a)
+    for x in a:
+        if x['service'] == 'facebook':
+            return x['url']
+def get_sc_account_twitter(username):
+    a = resolve_social_links(username)
+    #print('\n\n\n\n\n\naaaaaaaa',a)
+    for x in a:
+        if x['service'] == 'twitter':
+            return x['url']
+def get_sc_account_instagram(username):
+    a = resolve_social_links(username)
+    #print('\n\n\n\n\n\naaaaaaaa',a)
+    for x in a:
+        if x['service'] == 'instagram':
+            return x['url']         
 ########
 
 def get_all_user_data(username):
@@ -433,11 +433,12 @@ def get_all_user_data(username):
     #return songlinks
     sc_account_id = get_sc_account_id(username)
     sc_account_username = get_sc_account_username(username)
-
-    social = get_sc_account_web_profiles(username)
+    facebook = get_sc_account_facebook(username)
+    twitter = get_sc_account_twitter(username)
+    instagram = get_sc_account_instagram(username)
     print('|||||||||||||         ',username,'num songs', numsongs, '|||||||| songlinks',songlinks)
     print('\nID: ', sc_account_id, '\nActual Username: ',sc_account_username)
-    print('\n\nSOCIAL------', social)
+    print('\n\nSOCIAL------', '\n',facebook, '\n',twitter, '\n',instagram)
     return songlinks
 
 @app.route('/')
@@ -501,135 +502,41 @@ def my_stream_codes(soundcloud):
 @app.route('/adduser',methods=['GET', 'POST'])
 def adduser():
     form_adduser = AddSC()
-    #     # sc_account = SCaccount(sc_url = soundcloud ,sc_username=sc_username, zipcodes=zipcode)
-    #     # db.session.add(sc_account)
-    #     # db.session.commit()
-    # #form = AddSC(request.form)
-
-
-    # soundcloud = form_adduser.soundcloud.data
-    # zipcode = form_adduser.zipcode.data
-
-    # search = ZipcodeSearchEngine()
-    # lookupzip = search.by_zipcode(zipcode)
-    # city = lookupzip.City
-
-    # x = re.match('^https://soundcloud.com/',soundcloud)    
-
-    # if x is None and zipcode is "":
-    #     flash('Please fill out the form before submitting!')    
-    #     return redirect(url_for('adduser'))
-    # elif soundcloud is "":
-    #     flash('Please enter your SoundCloud URL!')   
-    #     return redirect(url_for('adduser'))        
-    # # elif name is "":
-    # #     flash('Please enter your name!')   
-    # #     return redirect(url_for('adduser'))
-    # elif city == None:
-    #     flash('Please enter a valid 5-digit zip code')
-    #     return redirect(url_for('adduser'))
-    # elif x is None:
-    #     flash('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
-    #     return redirect(url_for('adduser'))
-
 
     if form_adduser.validate_on_submit():
-        # session['soundcloud'] = form_adduser.soundcloud.data
-        # soundcloud=session.get('soundcloud')
-        # session['zipcode'] = form_adduser.zipcode.data
-        # zipcode=session.get('zipcode')
 
         sc = str(form_adduser.soundcloud.data)
         sc_username = sc.replace("https://soundcloud.com/", "")
-        print('**********************',sc_username)
+        #print('**********************',sc_username)
 
         get_or_create_scaccount(db_session=db.session, sc_url = form_adduser.soundcloud.data ,sc_zip = form_adduser.zipcode.data, sc_username = sc_username)
-        
+        flash ('thanks! (delete this later)')
         return redirect(url_for('addanother', sc_username = sc_username))
 
     return render_template('addaccount.html', form=form_adduser) 
 
-##??? how to send the username to the next form
+
 @app.route('/addanother/<sc_username>',methods=['GET', 'POST'])
 def addanother(sc_username):
-    print('++++++++', sc_username)
-    # sc_username = 'winandwoo'
+    #print('++++++++', sc_username)
     form_adduser = AddSC()
     
-    # soundcloud=form_adduser.soundcloud.data
-    # sc = str(soundcloud)
-    # sc_username = sc.replace("https://soundcloud.com/", "")
-
     if form_adduser.validate_on_submit():
 
         soundcloud=form_adduser.soundcloud.data
         sc = str(soundcloud)
         sc_username = sc.replace("https://soundcloud.com/", "")
 
-        print('1*********************',sc_username)
+        #print('1*********************',sc_username)
 
         get_or_create_scaccount(db_session=db.session, sc_url = form_adduser.soundcloud.data ,sc_zip = form_adduser.zipcode.data, sc_username = sc_username)
         
-        print('2********************',sc_username)
+        #print('2********************',sc_username)
         
         return redirect(url_for('addanother', sc_username = sc_username))
 
     return render_template('addanother.html', form=form_adduser, sc_username = sc_username) 
 
-
-
-
-#db_session,sc_url, sc_zip, sc_username
-
-########## ????? HOW TO APPEND ZIP CODE IF LESS THAN 3 ON THIS URL?????? #####
-
-
-##ERRORS
-        # sc_account = SCaccount(sc_url = soundcloud ,sc_username=sc_username, zipcodes=zipcode)
-        # db.session.add(sc_account)
-        # db.session.commit()
-
-        # flash('user added')
-
-        #return render_template('welcome.html', soundcloud = soundcloud, sc_username = sc_username, zipcode=zipcode)
-
-
-
-
-
-        #get_or_create_scaccount
-    
-    #return render_template('addaccount.html', form=simpleForm)
-
-
-
-        # session['soundcloud'] = form.soundcloud.data
-        # soundcloud=session.get('soundcloud')
-        
-        # # db.session.add(user)
-
-        # session['zipcode'] = form.zipcode.data
-        # zipcode=session.get('zipcode')
-
-        # sc = str(soundcloud)
-        # sc_username = sc.replace("https://soundcloud.com/", "")
-##### ??? FIX SO THAT IT FLASHES ONLY IF THERE ARE MORE THAN 3 ZIP CODES FOR THAT ACCOUNT
-    # if simpleForm.validate_on_submit():
-    #     sc_account = SCaccount(sc_url = soundcloud ,sc_username=sc_username, zipcodes=zipcode)
-    #     db.session.add(sc_account)
-    #     db.session.commit()
-    #     flash('user added')
-
-        # if db.session.query(SCaccount).filter_by(sc_url=form.soundcloud.data).first(): # If there's already a song with that title, though...nvm. Gotta add something like "(covered by..)"
-        #     flash("That SoundCloud user has already been addede")
-        # get_or_create_scaccount(db.session,form.soundcloud.data, form.zipcode.data, form.album.data)
-
-
-    # newuser = make_response(render_template('addaccount.html', form=simpleForm))
-
-    # #     #form = AddSC()
-    # #     # form = AddSC(request.form)    
-    # return newuser
 
 @app.route('/searchresults', methods = ['GET', 'POST'])
 def searchresults():    

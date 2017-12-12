@@ -151,21 +151,41 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 <button class="button button1" onclick="window.location.href='/myaccount/{{ sc_username }}'" style="float: right;margin-left:auto;margin-right:38%;display:block;margin-top:0px;margin-bottom:0%; " >Explore </button></h4>
 <br><br>
 
-{% block content %}
-  <div style="text-align:center;">
+<div style="text-align:center;">
 
-  <h1>Add another SoundCloud user!</h1>
-  <form method="POST">
+
+
+
+
+  
+<h1>Add another SoundCloud user!</h1>
+<!-- <div>
+{% for message in get_flashed_messages() %}
+{{ message }}
+{% endfor %}
+
+{% if form.errors %}
+    {{ form.errors }}
+{% endif %}
+</div>
+ -->
+<form method="POST">
 
       {{ form.hidden_tag() }}
-      {% for message in get_flashed_messages() %}
-      {{ message }}
-      {% endfor %}
+      {% if form.soundcloud.errors %}
+          {% for error in form.soundcloud.errors %}
+            {{ error }}
+          {% endfor %}
+      {% endif %}
       <p>{{ form.soundcloud.label }}{{ form.soundcloud() }}</p>
+      {% if form.zipcode.errors %}
+          {% for error in form.zipcode.errors %}
+            {{ error }}
+          {% endfor %}
+      {% endif %}      
       <p>{{ form.zipcode.label }}{{ form.zipcode() }}</p>
 
       {{ form.submit() }}
 
-  </form>
-{% endblock %}
+</form>
 
