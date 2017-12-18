@@ -10,6 +10,7 @@ from wtforms import StringField, IntegerField, SubmitField, Form, BooleanField, 
 from wtforms.validators import Required
 from wtforms import *
 from flask import *
+from flask import json
 from flask_sqlalchemy import SQLAlchemy
 import random
 from flask_migrate import Migrate, MigrateCommand # needs: pip/pip3 install flask-migrate
@@ -77,4 +78,8 @@ from flask_login import LoginManager, login_required, logout_user, login_user, U
 import gmplot
 from gmplot import *
 import googlemaps
+
+
+import numpy as np
+import codecs, json 
 

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<body bgcolor="#C79B71">
+
+
+
+<style>
+h1 {color:#FFF2E3;text-align:center;font-size:35px;font-family:Tahoma;}
+h2 {color:#31C3E9;text-align:center;font-size:25px;font-family:Tahoma;}
+h3 {color:#082026;text-align:center;font-size:23px;font-family:Tahoma;}
+h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
+p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
+</style>
+
+<p style="text-align:center;">
+
+<center><img src="/static/localbeats.png"  top = "0px"; position = "top" width="200;" height="200;" padding= "auto;" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
+
+
+
+
+<body>
+<div style='position:absolute;z-index:5;top:45%;left:45%;'>
+
+    <img id="imgAjax" alt="loading..." title="loading..." src="/static/loading.gif" style="width: 100px; height:
+100px" /><br /> <br />
+
+</div>
+</body>
+
+<script type="text/javascript">
+    /* <![CDATA[ */
+    this.focus(); //focus on new window 
+    redirect = function() {
+        var querystring = window.location.search.substring(1); //first query string
+        var page = querystring.substring(querystring.indexOf('=') + 1, querystring.length);
+        function toPage() {
+            if (page !== undefined && page.length > 1) {
+                document.write('<!--[if !IE]>--><head><meta http-equiv="REFRESH" content="1;url=' + page + '" /><\/head><!--<![endif]-->');
+                document.write(' \n <!--[if IE]>');
+                document.write(' \n <script type="text/javascript">');
+                document.write(' \n var version = parseInt(navigator.appVersion);');
+                document.write(' \n if (version>=4 || window.location.replace) {');
+                document.write(' \n window.location.replace("' + page + '");');
+                document.write(' document.images["imgAjax"].src="images/ajax-loading.gif"');
+                document.write(' \n } else');
+                document.write(' \n window.location.href="' + page + '";');
+                document.write(' \n  <\/script> <![endif]-->');
+            }
+        }
+        return {
+            begin: toPage
+        }
+    } ();
+    redirect.begin();
+    /* ]]> */
+</script>  

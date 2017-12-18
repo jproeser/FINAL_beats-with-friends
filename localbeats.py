@@ -61,17 +61,7 @@ def send_email(to, subject, template, **kwargs): # kwargs = 'keyword arguments',
     # However, if your app sends a LOT of email, it'll be better to set up some additional "queuing" software libraries to handle it. But we don't need to do that yet. Not quite enough users!
 
 
-
-
-
-
-
-
-##### Set up Models #####
 zips_and_accounts = db.Table('zips_and_accounts',db.Column('zipcode_id', db.Integer, db.ForeignKey('zipcodes.id')),db.Column('account_id',db.Integer, db.ForeignKey('scaccounts.id')))
-
-
-####???collections = 
 
 
 class SCaccount(db.Model):
@@ -99,60 +89,31 @@ class User(UserMixin, db.Model):
     account_ids = db.Column(db.Integer, db.ForeignKey("scaccounts.id")) ##or db.relationship('SCaccount', backref='User')
 
 
-
-
-
     @property
     def password(self):
+
         raise AttributeError('password is not a readable attribute')
-
-
-
     @password.setter
     def password(self, password):
+
         self.password_hash = generate_password_hash(password)
-
     def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
 
+        return check_password_hash(self.password_hash, password)
     @property
     def is_authenticated(self):
-        return True
 
+        return True
     @property
     def is_active(self):
-        return True
 
+        return True
 
 
 @login_manager.user_loader
 def load_user(user_id):
+
     return User.query.get(int(user_id)) # returns User object or None
-
-################################# CLASS NOTES ##########################
-# songs on many playlists, playlists can have many songs
-# relationshi = on playlists
-# association table - need two diff tables that represnt each entity. Need to setup each relationship and an associaiton table
-# secondary = name of association table that you're going to setup (on_playlist)
-# need to build association table 
-
-# in either of the models you need a =db.relationship line
-# db.Column for each of the unique aspects for each table
-
-# association table only necessary for many to many relationships. if one to many relationship, the many tables need an id from the one table. so for user you do playlists = db.relationship('Playlist', backref='User'). relationship with a playlist table that references the user table. relationship in the one that's one and a foreign key in the one that's many.
-
-
-# on_playlist = db.Table('on_playlist', db.Column('user_id', db.Integer, db. ForeignKey('songs.id')), db.Column('playlist_id', db.Integer))
-
-# class Song,
-# class Playlist(db.Model)
-#     __tablename__ = "playlists"
-#     id = ...
-#     name = ....
-#     user_id = .....
-#     songs = db. relationship('Song', secondary=on_playlist, backref=db.backref('playlists', lazy='dynamic'), lazy='dynamc')
-        
-
 
 
 ##################################################################
@@ -213,11 +174,34 @@ class AddSC(FlaskForm):
             flash ('Please enter a valid 5-digit zip code') 
     submit = SubmitField('Add User')
 
-
-
 class ZipSearchForm(FlaskForm):
     searchzip = StringField('<h4>Zipcode</h4>', [Required()])
+    
+    def validate_searchzip(self,field):
+        searchzip = field.data
+
+        search = ZipcodeSearchEngine()
+        lookupzip = search.by_zipcode(searchzip)
+        city = lookupzip.City
+        lat = lookupzip.Latitude
+        longi = lookupzip.Longitude
+        if searchzip is "":
+            raise ValidationError('Please enter the zip code for the area you would like to search')
+        if city == None:
+            raise ValidationError('Please enter a valid 5-digit zip code')
+   
     searchradius = StringField('<h4>Search Mile Radius</h4>', [Required()])
+    
+    def validate_searchradius(self,field):
+        searchradius = field.data
+        validradius = searchradius.isdigit()
+        if searchradius is "":
+            raise ValidationError('Please enter a the mile radius you would like to search around this zip code')
+        if validradius == False:
+            raise ValidationError('Please enter a valid search radius (only type a number)')
+        if searchradius is "0":
+            raise ValidationError('Please enter a number larger than 1')
+    
     submit = SubmitField('Submit')
 
 ##################################################################
@@ -257,7 +241,8 @@ def get_or_create_scaccount(db_session,sc_url, sc_zip, sc_username):
         # x = []
         # SCaccount.query.filter_by(sc_url=sc_url)
         
-        z = get_or_create_zipcode(db_session, sc_zip, sc)
+        #######z = get_or_create_zipcode(db_session, sc_zip, sc)
+
         # #### WILL THIS BE IN THE FORMAT OF A LIST?
         # zipcodes = []
         # zipcodes.append(db_session.query(Zipcode).filter_by(sc_zip=sc_zip).first())
@@ -268,6 +253,24 @@ def get_or_create_scaccount(db_session,sc_url, sc_zip, sc_username):
         #     ##### will this append it????
         #     sc.zipcodes.append(get_or_create_zipcode (sc_zip=sc_zip))
         # HOW to flash message, prompt continue or register button????
+
+        cities = []
+        a = Zipcode.query.all()
+        print('\nSC', sc, sc.sc_username)
+        for dbzip in a:
+            for user in dbzip.zip_users:
+                if str(user.sc_username) == str(sc.sc_username):
+                    zipcode = dbzip.sc_zip
+                    search = ZipcodeSearchEngine()
+                    lookupzip = search.by_zipcode(zipcode)
+                    city = lookupzip.City
+                    x = (city)
+                    cities.append(x)
+        if len(cities) < 3:
+            get_or_create_zipcode(db_session, sc_zip, sc)
+
+        # print('\n\n\n\n\n\nGet or create - cities', cities)
+        # print('\n\nlen', len(cities))
 
         return sc
     else:
@@ -317,6 +320,7 @@ def register():
 @app.route('/secret')
 @login_required
 def secret():
+
     return "Only authenticated users can do this! Try to log in or contact the site admin."
 
 
@@ -344,8 +348,6 @@ def resolve_profile(username):
         #print('\n soc LINKS', x)
         return accountinfo   
 
-
-
 def resolve_social_links(username):
     r = requests.get('https://api.soundcloud.com/users/{}/web-profiles.json?client_id={}'.format(username, CLIENTID), allow_redirects=False)
     if 'errors' in json.loads(r.text):
@@ -357,8 +359,18 @@ def resolve_social_links(username):
         #print('\n WEBPROFILES--------------\n', web_profiles)
         return web_profiles   
 
-
-
+def my_stream_codes(soundcloud):
+    #name = session.get('name')
+    username = soundcloud
+    tracks_url = resolve_profile_tracks_url(username)
+    track_listing = get_profile_tracks(tracks_url)
+    songlinks=[]
+    for track in track_listing:
+        stream_link = get_stream_link(track['stream_url'])
+        songlinks.append(re.findall('tracks/(\d+)', stream_link))
+    songlinks = list(chain.from_iterable(songlinks))
+    print('songlinks----', songlinks)
+    return render_template('sclinks.html', songlinks=songlinks) #name=name)
 
 def get_profile_tracks(tracks_url):
     r = requests.get(tracks_url)
@@ -376,18 +388,14 @@ def get_web_profiles(a):
     r = requests.get(a)
     return json.loads(r.text)
 
-
 def get_sc_id(username):
     sc_id = username
-
     return sc_id
-
 
 def get_sc_account_id(username):
     a = resolve_profile(username)
     openurl = get_actual_username(a)
     sc_account_id = openurl['id']
-
     return sc_account_id
 
 def get_sc_account_username(username):
@@ -402,21 +410,43 @@ def get_sc_account_facebook(username):
     for x in a:
         if x['service'] == 'facebook':
             return x['url']
+
 def get_sc_account_twitter(username):
     a = resolve_social_links(username)
     #print('\n\n\n\n\n\naaaaaaaa',a)
     for x in a:
         if x['service'] == 'twitter':
             return x['url']
+
 def get_sc_account_instagram(username):
     a = resolve_social_links(username)
     #print('\n\n\n\n\n\naaaaaaaa',a)
     for x in a:
         if x['service'] == 'instagram':
             return x['url']         
+
+def get_sc_account_soundcloud(username):
+    url = 'https://soundcloud.com/' + str(username)
+    return url
+
+def get_sc_account_cities(username):
+    cities = []
+    for dbzip in Zipcode.query.all():
+        for user in dbzip.zip_users:
+            if str(user.sc_username) == str(username):
+                zipcode = dbzip.sc_zip
+                search = ZipcodeSearchEngine()
+                lookupzip = search.by_zipcode(zipcode)
+                city = lookupzip.City
+                state = lookupzip.State
+                x = (city+', '+state)
+                cities.append(x)
+    x = ', '.join(cities)
+    return x
+
 ########
 
-def get_all_user_data(username):
+def get_sc_account_songlinks(username):
     tracks_url = resolve_profile_tracks_url(username)
     track_listing = get_profile_tracks(tracks_url)
     #socials = get_social_links(username)
@@ -428,75 +458,122 @@ def get_all_user_data(username):
         songlinks.append(re.findall('tracks/(\d+)', stream_link))
         #print('SONGLINKS..........', songlinks, user.sc_username)
         #return render_template('zipsearchresults.html', songlinks=songlinks)
-
     songlinks = list(chain.from_iterable(songlinks))
-    #return songlinks
-    sc_account_id = get_sc_account_id(username)
-    sc_account_username = get_sc_account_username(username)
-    facebook = get_sc_account_facebook(username)
-    twitter = get_sc_account_twitter(username)
-    instagram = get_sc_account_instagram(username)
-    print('|||||||||||||         ',username,'num songs', numsongs, '|||||||| songlinks',songlinks)
-    print('\nID: ', sc_account_id, '\nActual Username: ',sc_account_username)
-    print('\n\nSOCIAL------', '\n',facebook, '\n',twitter, '\n',instagram)
+
+    # sc_account_id = get_sc_account_id(username)
+    # sc_account_username = get_sc_account_username(username)
+    # facebook = get_sc_account_facebook(username)
+    # twitter = get_sc_account_twitter(username)
+    # instagram = get_sc_account_instagram(username)
+    # print('|||||||||||||         ',username,'num songs', numsongs, '|||||||| songlinks',songlinks)
+    # print('\nID: ', sc_account_id, '\nActual Username: ',sc_account_username)
+    # print('\n\nSOCIAL------', '\n',facebook, '\n',twitter, '\n',instagram)
     return songlinks
 
-@app.route('/')
+def get_all_usernames_in_radius(searchzip, searchradius):
+    search = ZipcodeSearchEngine()
+    lookupzip = search.by_zipcode(searchzip)
+    city = lookupzip.City
+    lat = lookupzip.Latitude
+    longi = lookupzip.Longitude
+    res = search.by_coordinate(lat, longi, radius=int(searchradius), returns=50)
+    allzips = []
+    for zipcode in res:
+        allzips.append(zipcode.Zipcode)
+    sc_zips_in_radius = []
+    sc_users_in_radius = []
+    for dbzip in Zipcode.query.all():
+        for zipinradius in allzips:
+            #print ('searchzip--', zipinradius)
+            #print('dbzip----', dbzip.sc_zip)
+            if str(zipinradius) == str(dbzip.sc_zip):
+            #Matches searched zipcodes with zipcodes in database
+                print('-------------------------------MATCH')
+                for user in dbzip.zip_users:
+                    print ('-------------------------------', user.sc_username)
+                    #finds usernames for users in zip search
+                    sc_users_in_radius.append(user.sc_username)
+    print('\n SOUNDCLOUD USERS IN RADIUS-------\n', sc_users_in_radius) 
 
-# def plotpoints():
+    return sc_users_in_radius
 
-#     #return pass
+    # all_song_codes_in_radius = []
+    # for username in sc_users_in_radius:
+    #     x = get_all_user_data(username)
+    #     all_song_codes_in_radius.append(x)
 
-# def get_info_for_map():
-#     zipcodes = Zipcode.query.all()
-#     search = ZipcodeSearchEngine()
-#     x = 0
-#     y = 0
-#     for zipcode in zipcodes:
-#         lookupzip = search.by_zipcode(zipcode)
-#         lat = lookupzip.Latitude
-#         longi = lookupzip.Longitude
-#         return ()     
+def create_user_dictionaries(username):
+    dictionary_of_users = {}
+    if get_sc_account_username(username) != None:
+        dictionary_of_users['Username'] = get_sc_account_username(username)
+    if get_sc_account_cities(username) != None:
+        dictionary_of_users['Cities'] = get_sc_account_cities(username)
+    if get_sc_account_soundcloud(username) != None:
+        dictionary_of_users['Soundcloud'] = get_sc_account_soundcloud(username)        
+    if get_sc_account_facebook(username) != None:
+        dictionary_of_users['Facebook'] = get_sc_account_facebook(username)
+    if get_sc_account_twitter(username) != None:
+        dictionary_of_users['Twitter'] = get_sc_account_twitter(username)
+    if get_sc_account_instagram(username) != None:
+        dictionary_of_users['Instagram'] = get_sc_account_instagram(username) 
+    if get_sc_account_songlinks(username) != None:
+        dictionary_of_users['Songs'] = get_sc_account_songlinks(username)
+    return dictionary_of_users
+######################################################################################################################
+######################################################################################################################
+######################################################################################################################
 
-
+@app.route('/',methods=['GET', 'POST'])
 def zipsearch():
     lat = 0
     lng = 0
-    simpleForm = ZipSearchForm()
-    x = '[{lat: 42.105579399999996, lng: -87.74680710000001},{lat: 42.08057429999999, lng: -87.7320368},{lat: 42.060010999999996, lng: -87.6926257},{lat: 42.0480869, lng: -87.7147986},{lat: 42.0105286, lng: -87.6926257},{lat: 42.0085328, lng: -87.84515270000001},{lat: 41.971106799999994, lng: -87.70248169999998},{lat: 42.2660881, lng: -83.7146001},{lat: 42.2129167, lng: -83.7305392},{lat: 42.2728525, lng: -83.57096399999998},{lat: 42.2253803, lng: -83.3415334},{lat: 39.8086537, lng: -104.8337879},{lat: 39.6999073, lng: -104.93304479999999},{lat: 40.75368539999999, lng: -73.9991637},{lat: 40.7750791, lng: -73.9932872},{lat: 33.96978970000001, lng: -118.24681480000001}]'
+    search_form = ZipSearchForm()
 
-    labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    ###ACCESS USER ZIPS
 
-    alllabels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    allgeo = ['42.105579399999996','-87.74680710000001']
+    locations = []
+    for dbzip in Zipcode.query.all():
+        zipcode = dbzip.sc_zip
+        search = ZipcodeSearchEngine()
+        lookupzip = search.by_zipcode(zipcode)
+        lat = str(lookupzip.Latitude)
+        longi = str(lookupzip.Longitude)
+        points = '{lat: '+lat+', lng: '+longi+'}'
+        locations.append(points)
+    locations = str(locations)
+    locations = locations.replace('\'', '')
+    locations = locations.replace('}, {', '},{')
+    x = locations
+    
+    if search_form.validate_on_submit():
+        searchzip = search_form.searchzip.data
+        searchradius = search_form.searchradius.data
+        return redirect(url_for('searchresults', searchzip = searchzip, searchradius=searchradius))
 
-    search = make_response(render_template('zipform.html', form=simpleForm, labels=labels, alllabels=alllabels, allgeo=allgeo, x=x))
-    form = ZipSearchForm(request.form)
+    return render_template('homepage.html', form=search_form, x=x)
 
-    return search
+@app.route('/searchresults/<searchzip>-<searchradius>', methods = ['GET', 'POST'])
+def searchresults(searchzip, searchradius):    
+    
+    sc_users_in_radius = get_all_usernames_in_radius(searchzip, searchradius)
+    all_song_codes_in_radius = []
+
+    all_user_dictionaries=[]
+    for username in sc_users_in_radius:
+        user_songlinks = get_sc_account_songlinks(username)
+        all_song_codes_in_radius.extend(user_songlinks)
+
+        all_user_dictionaries.append(create_user_dictionaries(username))
+
+    print('\n\n\n ALL USER DICTIONARIES', all_user_dictionaries)
+
+    return render_template('zipsearchresults.html', sc_users_in_radius=sc_users_in_radius, all_song_codes_in_radius=all_song_codes_in_radius, all_user_dictionaries=all_user_dictionaries)
 
 @app.route('/useraccount')
 def useraccount():
     sc_username = 'yo'
     return render_template('useraccount.html', sc_username=sc_username)
-
 #@app.route('/test')
 #######https://github.com/ChainsawPolice/soundcloud-page-downloader/blob/master/soundcloud-downloader.py
-
-
-def my_stream_codes(soundcloud):
-    #name = session.get('name')
-    username = soundcloud
-    tracks_url = resolve_profile_tracks_url(username)
-    track_listing = get_profile_tracks(tracks_url)
-    songlinks=[]
-    for track in track_listing:
-        stream_link = get_stream_link(track['stream_url'])
-        songlinks.append(re.findall('tracks/(\d+)', stream_link))
-    songlinks = list(chain.from_iterable(songlinks))
-    print('songlinks----', songlinks)
-    return render_template('sclinks.html', songlinks=songlinks) #name=name)
 
 ########?????????????########
 @app.route('/adduser',methods=['GET', 'POST'])
@@ -536,229 +613,6 @@ def addanother(sc_username):
         return redirect(url_for('addanother', sc_username = sc_username))
 
     return render_template('addanother.html', form=form_adduser, sc_username = sc_username) 
-
-
-@app.route('/searchresults', methods = ['GET', 'POST'])
-def searchresults():    
-    form = ZipSearchForm(request.form)
-
-    searchzip = form.searchzip.data
-    searchradius = form.searchradius.data
-
-    search = ZipcodeSearchEngine()
-    lookupzip = search.by_zipcode(searchzip)
-    city = lookupzip.City
-    lat = lookupzip.Latitude
-    longi = lookupzip.Longitude
-
-    validradius = searchradius.isdigit()
-
-    if searchzip is "" and searchradius is "":
-        flash('Please fill out the form before submitting!') 
-        return redirect(url_for('zipsearch'))
-    elif searchzip is "":
-        flash('Please enter the zip code for the area you would like to search') 
-        return redirect(url_for('zipsearch'))
-    elif city == None:
-        flash('Please enter a valid 5-digit zip code')
-        return redirect(url_for('zipsearch'))
-    elif searchradius is "":
-        flash('Please enter a the mile radius you would like to search around this zip code')
-        return redirect(url_for('zipsearch'))
-    elif validradius == False:
-        flash('Please enter a valid search radius (only type a number)')
-        return redirect(url_for('zipsearch')) 
-    elif searchradius is "0":
-        flash('Please enter a number larger than 1')
-        return redirect(url_for('zipsearch'))
-
-    if request.method == 'POST' and form.validate_on_submit():
-
-        session['searchzip'] = form.searchzip.data
-        searchzip=session.get('searchzip')
-
-        session['searchradius'] = form.searchradius.data
-        searchradius=session.get('searchradius')
-
-        res = search.by_coordinate(lat, longi, radius=int(searchradius), returns=50)
-
-        allzips = []
-        for zipcode in res:
-            allzips.append(zipcode.Zipcode)
-            allzips.append(zipcode.City)
-            allzips.append(zipcode.Latitude)
-            allzips.append(zipcode.Longitude)            
-
-        return render_template('searchresults.html', searchzip = searchzip, searchradius = searchradius, city = city, allzips = allzips)
-
-# @app.route('/welcome', methods = ['GET', 'POST'])
-# def welcome():
-#     form = AddSC(request.form)
-
-#     #name = form.name.data
-#     soundcloud = form.soundcloud.data
-#     zipcode = form.zipcode.data
-
-#     search = ZipcodeSearchEngine()
-#     lookupzip = search.by_zipcode(zipcode)
-#     city = lookupzip.City
-
-#     x = re.match('^https://soundcloud.com/',soundcloud)    
-
-#     if x is None and zipcode is "":
-#         flash('Please fill out the form before submitting!')    
-#         return redirect(url_for('signin'))
-#     elif soundcloud is "":
-#         flash('Please enter your SoundCloud URL!')   
-#         return redirect(url_for('signin'))        
-#     # elif name is "":
-#     #     flash('Please enter your name!')   
-#     #     return redirect(url_for('signin'))
-#     elif city == None:
-#         flash('Please enter a valid 5-digit zip code')
-#         return redirect(url_for('signin'))
-#     elif x is None:
-#         flash('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
-#         return redirect(url_for('signin'))
-
-
-#     if form.validate_on_submit():
-#         # name = form.name.data
-#         # soundcloud = form.soundcloud.data
-#         # session['name'] = form.name.data
-#         # name=session.get('name')
-#         ## old
-
-#         session['soundcloud'] = form.soundcloud.data
-#         soundcloud=session.get('soundcloud')
-        
-#         # db.session.add(user)
-
-
-#         session['zipcode'] = form.zipcode.data
-#         zipcode=session.get('zipcode')
-
-#         sc = str(soundcloud)
-#         sc_username = sc.replace("https://soundcloud.com/", "")
-
-#         return render_template('welcome.html', soundcloud = soundcloud, sc_username = sc_username, zipcode=zipcode)
-
-########## ????? HOW TO APPEND ZIP CODE IF LESS THAN 3 ON THIS URL?????? #####
-
-
-##ERRORS
-        # sc_account = SCaccount(sc_url = soundcloud ,sc_username=sc_username, zipcodes=zipcode)
-        # db.session.add(sc_account)
-        # db.session.commit()
-
-        # flash('user added')
-
-@app.route('/test')
-
-# class SCaccount(db.Model):
-#     __tablename__ = "scaccounts"
-#     id = db.Column(db.Integer, primary_key=True)
-#     sc_url = db.Column(db.String(256), unique=True)
-#     sc_username = db.Column(db.String(128)) #is this ok even if regex
-
-# class Zipcode(db.Model):
-#     __tablename__ = "zipcodes"
-#     id = db.Column(db.Integer, primary_key=True)
-#     sc_zip = db.Column(db.Integer)
-#     zip_users = db.relationship('SCaccount',secondary=zips_and_accounts,backref=db.backref('zipcodes',lazy='dynamic'),lazy='dynamic')
-
-
-
-#def all_stream_codes(sc_un):
-    # #name = session.get('name')
-    # username = sc_un
-    # tracks_url = resolve_profile_tracks_url(username)
-    # track_listing = get_profile_tracks(tracks_url)
-    # songlinks=[]
-    # for track in track_listing:
-    #     stream_link = get_stream_link(track['stream_url'])
-    #     songlinks.append(re.findall('tracks/(\d+)', stream_link))
-    # songlinks = list(chain.from_iterable(songlinks))
-    # return songlinks
-    # #print('songlinks----', songlinks)
-    # #return render_template('sclinks.html', songlinks=songlinks) #name=name)
-
-
-
-def all_usernames_in_radius():#searchzip, searchradius):
-    searchzip = '60093'
-    searchradius = '5'
-
-    search = ZipcodeSearchEngine()
-    lookupzip = search.by_zipcode(searchzip)
-    city = lookupzip.City
-    lat = lookupzip.Latitude
-    longi = lookupzip.Longitude
-
-    print (lat)
-    print (longi)
-
-    res = search.by_coordinate(lat, longi, radius=int(searchradius), returns=50)
-
-    allzips = []
-    for zipcode in res:
-        allzips.append(zipcode.Zipcode)
-
-    sc_zips_in_radius = []
-    sc_users_in_radius = []
-
-    print('ALL ZIPS', allzips)
-
-
-    for dbzip in Zipcode.query.all():
-        for zipinradius in allzips:
-            #print ('searchzip--', zipinradius)
-            #print('dbzip----', dbzip.sc_zip)
-            if str(zipinradius) == str(dbzip.sc_zip):
-            #Matches searched zipcodes with zipcodes in database
-                print('-------------------------------MATCH')
-                for user in dbzip.zip_users:
-                    print ('-------------------------------', user.sc_username)
-                    #finds usernames for users in zip search
-                    sc_users_in_radius.append(user.sc_username)
-    print('*!*!*!*!*!!', sc_users_in_radius) 
-
-    all_song_codes_in_radius = []
-    for username in sc_users_in_radius:
-        x = get_all_user_data(username)
-        all_song_codes_in_radius.append(x)
-
-    # for username in sc_users_in_radius:
-    #     #print(sc_un)
-    #     #x = sc_un
-    #     #print()
-    #     #all_song_codes_in_radius.append(all_stream_codes(sc_un=sc_un))
-
-    #     #username = x
-    #     tracks_url = resolve_profile_tracks_url(username)
-    #     #print('tracks_urltracks_urltracks_urltracks_urltracks_urltracks_urltracks_url', tracks_url)
-    #     track_listing = get_profile_tracks(tracks_url)
-    #     #print('track_listingtrack_listingtrack_listingtrack_listingtrack_listingtrack_listing',track_listing)
-    #     songlinks=[]
-    #     for track in track_listing:
-    #         stream_link = get_stream_link(track['stream_url'])
-    #         songlinks.append(re.findall('tracks/(\d+)', stream_link))
-    #         #print('SONGLINKS..........', songlinks, user.sc_username)
-    #         #return render_template('zipsearchresults.html', songlinks=songlinks)
-
-    #     songlinks = list(chain.from_iterable(songlinks))
-    #     #return songlinks
-    #     all_song_codes_in_radius.append(songlinks)
-
-    #     #all_song_codes_in_radius = list(chain.from_iterable(all_song_codes_in_radius))
-    # print('################################', all_song_codes_in_radius)
-    # #return (all_song_codes_in_radius)
-
-    
-    return render_template('zipsearchresults.html', sc_users_in_radius=sc_users_in_radius)
-
-
-
 
 
 @app.route('/myaccount/<sc>')

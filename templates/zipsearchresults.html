@@ -1,8 +1,8 @@
-<element onclick="script">
-
-<center><img src="/static/localbeats.png"  position = "bottom" width="200;" height="200;" padding="auto" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
-
-<body bgcolor="#C79B71">
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
 
 <style>
 h1 {color:#FFF2E3;text-align:center;font-size:35px;font-family:Tahoma;}
@@ -12,35 +12,66 @@ h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
 p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 </style>
 
+<element onclick="script">
+
 <div align="center">
 
 <div style="text-align:center;">
 
 
 
+
+<center><img src="/static/localbeats.png"  position = "bottom" width="200;" height="200;" padding="auto" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
+
+<body bgcolor="#C79B71">
+
+
+
+
+
+
+
 <button onclick="goBack()" style="text-align:center;">Go Back</button>
 <button onclick="window.location.href='/'" style="text-align:center;">Go Home</button>
 
-<script>
-function goBack() {
-    window.history.back();
-}
-</script>
 
 
 
+{% for u in all_user_dictionaries %}
 
 
+	<h2>{{ u.Username }}</h2>
+	<h3>{{ u.Cities }}</h3>
+	{% if u.Soundcloud %}
+		<a href="{{u.Soundcloud}}"target="_blank"><img src="/static/soundcloud.png" alt="Soundcloud"width="50" height="50"/></a>
+	{% endif %}
+	{% if u.Facebook %}
+		<a href="{{u.Facebook}}"target="_blank"><img src="/static/facebook.png" alt="Facebook"width="50" height="50"/></a>
+	{% endif %}
+	{% if u.Twitter %}
+		<a href="{{u.Twitter}}"target="_blank"><img src="/static/twitter.png" alt="Twitter"width="50" height="50"/></a>	
+    {% endif %}
+	{% if u.Instagram %}
+		<a href="{{u.Instagram}}"target="_blank"alt="Instagram"><img src="/static/instagram.png" width="50" height="50"/></a>	
+    {% endif %}
+    
+
+    <script type="text/javascript">
+        function newSrc(id, array) {
+            var random = array[Math.floor(Math.random() * array.length)];
+            var newSrc="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+random+"&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true";
+            var x = document.getElementById(id)
+            x.src=newSrc;
+
+        }
+
+    </script> 
+    <br>   
+    <iframe id="{{ u.Username }}" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ u.Songs[0] }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true" width="400" height="400" scrolling="no" frameborder="yes" ></iframe>  
+    <br><button onClick="newSrc('{{ u.Username }}',{{ u.Songs }});">Change Iframe Src</button>
 
 
-<ul>
-    {% for r in all_song_codes_in_radius %}
-		<iframe width="400" height="400" scrolling="no" frameborder="yes"
-		src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ r }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true">
-		</iframe>
-    {% endfor %}
-</ul>
-
-
-
+{% endfor %}
+<!-- http://jsfiddle.net/z47XP/
+ -->
 
