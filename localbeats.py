@@ -565,8 +565,10 @@ def searchresults(searchzip, searchradius):
         all_user_dictionaries.append(create_user_dictionaries(username))
 
     print('\n\n\n ALL USER DICTIONARIES', all_user_dictionaries)
+    lenusers = (len(all_user_dictionaries))
+    print (lenusers)
 
-    return render_template('zipsearchresults.html', sc_users_in_radius=sc_users_in_radius, all_song_codes_in_radius=all_song_codes_in_radius, all_user_dictionaries=all_user_dictionaries)
+    return render_template('zipsearchresults.html', sc_users_in_radius=sc_users_in_radius, all_song_codes_in_radius=all_song_codes_in_radius, all_user_dictionaries=all_user_dictionaries, lenusers=lenusers)
 
 @app.route('/useraccount')
 def useraccount():

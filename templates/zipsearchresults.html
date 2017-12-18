@@ -34,8 +34,10 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 <button onclick="goBack()" style="text-align:center;">Go Back</button>
 <button onclick="window.location.href='/'" style="text-align:center;">Go Home</button>
 
-
-
+{% if lenusers == 0 %}
+<h3> Sorry, no SoundCloud accounts from this area have been added to our database yet </h3>
+<button onClick="window.location.href='/adduser'">Add Users</button>
+{% endif %}
 
 {% for u in all_user_dictionaries %}
 
