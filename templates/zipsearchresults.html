@@ -4,13 +4,10 @@ function goBack() {
 }
 </script>
 
-<style>
-h1 {color:#FFF2E3;text-align:center;font-size:35px;font-family:Tahoma;}
-h2 {color:#31C3E9;text-align:center;font-size:25px;font-family:Tahoma;}
-h3 {color:#082026;text-align:center;font-size:23px;font-family:Tahoma;}
-h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
-p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
-</style>
+<head>
+<link href="./style.css" type="text/css" rel="stylesheet">
+</head>
+
 
 <element onclick="script">
 
@@ -31,19 +28,40 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 
 
 
-<button onclick="goBack()" style="text-align:center;">Go Back</button>
-<button onclick="window.location.href='/'" style="text-align:center;">Go Home</button>
+<button class="button button1" onclick="goBack()" style="text-align:center;">Go Back</button>
+<button class="button button1" onclick="window.location.href='/'" style="text-align:center;">Go Home</button>
 
 {% if lenusers == 0 %}
 <h3> Sorry, no SoundCloud accounts from this area have been added to our database yet </h3>
-<button onClick="window.location.href='/adduser'">Add Users</button>
+<button class="button button2" onClick="window.location.href='/adduser'">Add Users</button>
+{% else %}
+<h3> We found {{ lenusers }} users in our database that are within {{ searchradius }} miles of {{ searchcity }}. </h3>
+<script type="text/javascript">
+    function newSrc(id, array) {
+        var random = array[Math.floor(Math.random() * array.length)];
+        var newSrc="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+random+"&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true";
+        var x = document.getElementById(id)
+        x.src=newSrc;
+
+    }
+
+</script> 
+<br>   
+<iframe id="all" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ all_song_codes_in_radius[0] }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true" width="400" height="400" scrolling="no" frameborder="yes" ></iframe>  
+<br><button class="button button2" onClick="newSrc('all',{{ all_song_codes_in_radius }});">Random Song from All Users</button>
+
+<br></br>
+
 {% endif %}
+
+
+
 
 {% for u in all_user_dictionaries %}
 
 
-	<h2>{{ u.Username }}</h2>
-	<h3>{{ u.Cities }}</h3>
+	<h2><bold>{{ u.Username }}</bold></h2>
+	<h4>{{ u.Cities }}</h4>
 	{% if u.Soundcloud %}
 		<a href="{{u.Soundcloud}}"target="_blank"><img src="/static/soundcloud.png" alt="Soundcloud"width="50" height="50"/></a>
 	{% endif %}
@@ -70,10 +88,10 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
     </script> 
     <br>   
     <iframe id="{{ u.Username }}" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ u.Songs[0] }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true" width="400" height="400" scrolling="no" frameborder="yes" ></iframe>  
-    <br><button onClick="newSrc('{{ u.Username }}',{{ u.Songs }});">Change Iframe Src</button>
+    <br><button class="button button1" onClick="newSrc('{{ u.Username }}',{{ u.Songs }});">Random Song from User</button>
 
 
 {% endfor %}
 <!-- http://jsfiddle.net/z47XP/
  -->
-
+<br></br>

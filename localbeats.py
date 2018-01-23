@@ -567,8 +567,10 @@ def searchresults(searchzip, searchradius):
     print('\n\n\n ALL USER DICTIONARIES', all_user_dictionaries)
     lenusers = (len(all_user_dictionaries))
     print (lenusers)
-
-    return render_template('zipsearchresults.html', sc_users_in_radius=sc_users_in_radius, all_song_codes_in_radius=all_song_codes_in_radius, all_user_dictionaries=all_user_dictionaries, lenusers=lenusers)
+    search = ZipcodeSearchEngine()
+    lookupzip = search.by_zipcode(searchzip)
+    searchcity = lookupzip.City
+    return render_template('zipsearchresults.html', sc_users_in_radius=sc_users_in_radius, all_song_codes_in_radius=all_song_codes_in_radius, all_user_dictionaries=all_user_dictionaries, lenusers=lenusers, searchradius=searchradius, searchcity=searchcity)
 
 @app.route('/useraccount')
 def useraccount():
