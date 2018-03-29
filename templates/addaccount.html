@@ -1,4 +1,4 @@
-<center><img src="/static/localbeats.png"  position = "bottom" width="200;" height="200;" padding="auto" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
+<!-- <center><img src="/static/localbeats.png"  position = "bottom" width="200;" height="200;" padding="auto" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
 
 <body bgcolor="#C79B71">
 
@@ -10,12 +10,29 @@ h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
 p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 </style>
 
+ -->
+
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <title>Local Beats</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" type="text/css" href="./static/css/style.css">
+
+<!--   <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/responsive.css') }}">
+  
+ -->
+</head>
 
 
-<h1>Add a SoundCloud User!</h1>
+<body>
+  <img class="logo" src="/static/localbeats.png"  width="200" height="200" onclick="window.location.href='/'" alt="logo">
 
-<div style="text-align:center;">
-<div>
+  <h1>Add a SoundCloud User!</h1>
+
 
 
 <!-- {% for field, errors in form.errors.items() %}
@@ -24,7 +41,6 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 
 {% endfor %}
  -->
-</div>
 
 <form method="POST">
 
@@ -46,3 +62,5 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
   {{ form.submit() }}
 
 </form>
+</body>
+</html>

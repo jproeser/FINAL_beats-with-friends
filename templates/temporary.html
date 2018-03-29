@@ -10,33 +10,6 @@
   <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/responsive.css') }}">
   
  -->
- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
-  <script>
-    $(function() {
-      $('a[href*=#]:not([href=#])').click(function() {
-        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-
-          var target = $(this.hash);
-
-          headerHeight = $(".shade").height() + 5; // Get fixed header height
- 
-
-          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-          if (target.length) {
-            $('html,body').animate({
-              scrollTop: target.offset().top - headerHeight
-            }, 1000);
-            return false;
-          }
-        }
-      });
-    });
-  </script>
-
-
-
-
 </head>
 
 
@@ -45,41 +18,14 @@
 
 
 
-<!-- https://codepen.io/jacobchavezjr/pen/xdgbG?editors=1100
- -->
+
 <body>
 
-  <container id="fullpage">
-
-    <header>
-
-    <nav>
-<!--        <a href="#home" class="logo"><img src="../static/localbeats.png" width="10%" height="10%" alt="logo" ></a> -->
-
-
-      <div class="shade">
-
-        <ul>
-          <!-- <li><a href="index.html" class="logo"><img src="../static/localbeats.png" width="70" height="70" onclick="window.location.href='/'" alt="logo" ></a></li> -->
-
-<!--           <li><a href="#home"> Home </a></li>
- -->
-          <li><a href="#map"> Map </a></li>
-          <li><a href="#search"> Search </a></li>
-          <li><a href="#adduser"> Add User </a></li>
-          <li><a href="#about"> About </a></li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-  <div class="page-container">
-
-<!-- 
   <header>
     <nav id = "top-nav" class="top-nav">
-      <div class="logo">
+<!--       <div class="logo">
       <a href="index.html" class="logo"><img src="../static/localbeats.png" width="200" height="200" onclick="window.location.href='/'" alt="logo" class="center"></a>
-          </div>
+          </div> -->
          <ul class>
               <li><a class="current-page" href="index.html">HOME</a></li>
               <li><a href="#">Topic One</a></li>
@@ -92,28 +38,21 @@
       </nav>
   </header>
 
- -->
-<!-- //////////////////////////////////HOME////////////////////////////////////////////// -->
-<div id ="home"> </div>
-  <div class="section home">
 
-  <div>
+
+
+
+
+
+<!--   <div>
   {% for message in get_flashed_messages() %}
     <h3>{{ message }}</h3>
   {% endfor %}
-  </div>
+  </div> -->
 
-  <h1 class="center">Connect with your local SoundCloud community</h1>
-</div>
-<!-- //////////////////////////////////MAP////////////////////////////////////////////// -->
-<!-- 
- <div id="map"> </div>
-    
- -->
-<!--  <div class="section map"> -->
-    
+  <h1 class="center">Connect with your local SoundCloud community</h1><br>
 
-  <div id="map" class="section map"></div>
+  <div id="map"></div>
   <script>
 
     function initMap() {
@@ -156,22 +95,11 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 <!-- https://developers.google.com/maps/documentation/javascript/marker-clustering
  -->
 
-<!--     </div>
-
- -->
-
-
-
-
-<!-- //////////////////////////////////SEARCH////////////////////////////////////////////// -->
-
-<!--     <div id ="search"> </div>
- -->    <div id ="search" class="section search">
-
 <h1 class="center">Search for SoundCloud users near you</h1>
+<br>
 
 
-
+<!-- 
 <form method="POST">
 <div class=center>
   {{ form.hidden_tag() }}
@@ -192,39 +120,22 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
   {{ form.submit() }}
 </div>
 </form>
+ -->
 
-</div>
-
-
-
-
-<!-- <br><br><br>
+<br><br><br>
 {% if current_user.is_authenticated %}
-    <button onclick="{{ url_for('logout') }}" >Sign Out {{current_user.username}}</a>
+<!--     <button onclick="{{ url_for('logout') }}" >Sign Out {{current_user.username}}</a> -->
     <button class="button button1" onclick="window.location.href='/logout'" style="float: left;margin-right:auto;margin-left:40%;display:block;margin-top:0px;margin-bottom:0%;" >Log Out</button>
 {% else %}
     <button class="button button1" onclick="window.location.href='/login'" style="float: left;margin-right:auto;margin-left:40%;display:block;margin-top:0px;margin-bottom:0%;" >Sign In</button>
-{% endif %} -->
-
-
-<!-- //////////////////////////////////ADD USER////////////////////////////////////////////// -->
-
-    <div id ="adduser"> </div>
-    <div class="section adduser">
-  
+{% endif %}
 
 <button class="button button1" onclick="window.location.href='/adduser'" style="float: right;margin-left:auto;margin-right:40%;display:block;margin-top:0px;margin-bottom:0%; " >Add SC User</button>
-
-  </div>
-
-</div>
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
   <footer class="footer">
     <p>This site was created by James Roeser &copy; 2018</p>
   </footer>
-
-</container>
 </body>
 </html>
 
