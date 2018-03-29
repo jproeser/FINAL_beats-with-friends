@@ -9,9 +9,18 @@ app.debug = True
 app.static_folder = 'static'
 app.config['SECRET_KEY'] = 'hardtoguessstring'
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL') or "postgresql://localhost/lb9"  # TODO: decide what your new database name will be, and create it in postgresql, before running this new application
+#########HEROKU########
+# https://paper.dropbox.com/doc/SI-364-Deploy-Flask-App-on-Heroku-gZyg3VeOIFvNgP41k0FFF
+
+app.config['HEROKU_ON'] = os.environ.get('HEROKU')
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL') or "postgresql://localhost/lb9"
+
+
+
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL') or "postgresql://localhost/lb9"  
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 # Seting up email
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
