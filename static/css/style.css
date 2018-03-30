@@ -334,25 +334,25 @@ h2{
 
 h3
 {
-  margin: 0;
-  padding: 20px;
-
-  color: #466995;
+  margin: 20px 40px;
+  padding: 0px 90px;
+  color: #FFDFB5;
   font-family: 'Yantramanav', sans-serif;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 50;
+/*  -webkit-animation: fade 4s;
+  animation: fade 4s;*/
   text-align: center;
-  font-weight: 700;
-  text-transform: uppercase;
-/*  padding: 30px;*/
+}
 
 }
 
 h4 {
-  margin: 0;
-  padding: 20px;
+  margin: 30;
+  padding: 40px;
   color: #466995;
   font-family: 'Yantramanav', sans-serif;
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 300;
   letter-spacing: 2px;
   text-align: center;

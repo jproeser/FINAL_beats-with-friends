@@ -199,7 +199,7 @@ class ZipSearchForm(FlaskForm):
         if city == None:
             raise ValidationError('Please enter a valid 5-digit zip code')
    
-    searchradius = StringField('<h2>Search Mile Radius</h2>', [Required()])
+    searchradius = StringField('<h4>Search Mile Radius</h4>', [Required()])
     
     def validate_searchradius(self,field):
         searchradius = field.data
