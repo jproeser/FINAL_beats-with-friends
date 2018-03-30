@@ -30,8 +30,8 @@ footer{
   color: #F54320;
   background-color: #DBE9EE;
   text-align: center;
-  height: 100px;
-  font-size: .85em;
+/*  height: 100px;
+*/  font-size: .85em;
   text-align: center;
 }
 footer p{
@@ -94,12 +94,12 @@ footer p{
     background-color: transparent; 
     border: 2px solid #FFDFB5;
 
-    height: 60px;
-    width: 120px;
+    height: 70px;
+    width: 140px;
     text-align: center;
     text-decoration: none;
 /*    display: inline-flex;*/
-    font-size: 16px;
+    font-size: 20px;
     margin: 30px 90px;
     -webkit-transition-duration: 0.4s; 
     transition-duration: 0.4s;
@@ -119,12 +119,12 @@ footer p{
 
     border: 2px solid #FFDFB5;
 
-    height: 60px;
-    width: 120px;
+    height: 70px;
+    width: 140px;
     text-align: center;
     text-decoration: none;
 /*    display: inline-flex;
-*/    font-size: 16px;
+*/    font-size: 20px;
     margin: 30px 90px;
     -webkit-transition-duration: 0.4s; 
     transition-duration: 0.4s;
@@ -321,14 +321,14 @@ font-weight: 200;
 
 
 h2{
-  margin: 0px 40px;
+  margin: 20px 40px;
   padding: 0px 90px;
-  color: #FFB881;
+  color: #FFDFB5;
   font-family: 'Yantramanav', sans-serif;
   font-size: 30px;
   font-weight: 50;
-  -webkit-animation: fade 4s;
-  animation: fade 4s;
+/*  -webkit-animation: fade 4s;
+  animation: fade 4s;*/
   text-align: center;
 }
 
@@ -350,7 +350,6 @@ h3
 h4 {
   margin: 0;
   padding: 20px;
-
   color: #466995;
   font-family: 'Yantramanav', sans-serif;
   font-size: 18px;
@@ -570,16 +569,21 @@ font-style: italic;
 }
 .home h3
 {
-  padding: 16px 10% 50px 80px;
+
+  margin: 0px 40px;
+  padding: 0px 90px;
+
+  color: #466995;
   font-family: 'Yantramanav', sans-serif;
-  font-style: none;
-  font-weight: 100;
-  font-size: 18px;
-  line-height: 100%;
-  text-transform: none;
-  color: #71c837;
-  -webkit-animation: fade 2s;
-  animation: fade 2s;
+  font-size: 28px;
+  font-weight: 50;
+
+  -webkit-animation: fade 5s;
+  animation: fade 4s;
+  text-align: center;
+  font-style: italic;
+
+  
 }
 
 /*.map
@@ -597,6 +601,7 @@ font-style: italic;
 .search
 {
   background-color: #1F2633;
+  height: 100vh;
 }
 
 /*.recent
@@ -836,20 +841,29 @@ hr{
   border:0;
   border-top:1px solid #666;
 }
-.open, .close{
+.open/*, .close*/{
   position:fixed;
   color:#a08e61;
   top:20px;
   right:20px;
-  z-index:9;
-  font-size:38px;
+  z-index:90000000000000000000;
+  font-size:60px;
   line-height:11px;
   opacity:0.6;
   transition:all 0.1s
 }
 .close{
+position:fixed;
+  color:#a08e61;
+  top:20px;
+  right:20px;
+  font-size:40px;
+  line-height:11px;
+  opacity:0.6;
+  transition:all 0.1s
   color:#fff;
-  z-index:100
+  z-index:1000000000000000000000000
+
 }
 .open:hover,.close:hover{
   opacity:1
@@ -909,8 +923,8 @@ background:url(http://i58.tinypic.com/29cqp88.jpg) center no-repeat;
 }
 
 .search h1{
-padding: 2vh 60px -200px 60px;
-margin: 0 0 -200 0;
+padding: 2vh 60px 2vh 60px;
+margin: 0 0 0 0;
 font-family: 'Yantramanav', sans-serif;
 font-style: medium;
 letter-spacing: 5px;
@@ -969,10 +983,10 @@ input[type=text] {
     font-size: 15px;
     text-transform: uppercase;
     color: #1F2633;
+/*
+    -webkit-animation: flyIn 2s, fade 1s;
+    animation: fade 1s;*/
 
-    -webkit-animation:/* flyIn 2s,*/ fade 3s;
-      
-    animation: fade 3s;
     text-align: center;
     font-weight: 200;
 
@@ -985,7 +999,7 @@ input[type=submit] {
     width: 120px;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 22px;
     margin: 30px 90px;
     -webkit-transition-duration: 0.4s; 
     transition-duration: 0.4s;
@@ -994,6 +1008,10 @@ input[type=submit] {
     color: #FFDFB5;
     font-family: 'Yantramanav', sans-serif;
     vertical-align: middle;
+    margin-top: 50px;
+    -webkit-animation:/* flyIn 2s,*/ fade 2s;
+    animation: fade 3s;
+
 }
 
 input[type=submit]:hover {
@@ -1003,7 +1021,7 @@ input[type=submit]:hover {
     width: 120px;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 22px;
     margin: 30px 90px;
     -webkit-transition-duration: 0.4s; 
     transition-duration: 0.4s;
@@ -1012,12 +1030,48 @@ input[type=submit]:hover {
     color: #1F2633;
     font-family: 'Yantramanav', sans-serif;
     vertical-align: middle;
+    margin-top: 50px;
+
+
 
 }
 
 input {
     width: 50%;
 }
+
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+
+/* The alert message box */
+.alert {
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
+
+
 
 @media only screen and (min-width: 1000px) {
 
