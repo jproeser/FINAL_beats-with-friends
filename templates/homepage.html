@@ -5,14 +5,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+
+
+<!-- <link rel="stylesheet" type="text/css" href= "https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.7.4/jquery.fullPage.min.css">
+<link rel="stylesheet" type="text/css" href= "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href= "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href= "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+ -->
+
   <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+<link href="https://fonts.googleapis.com/css?family=Yantramanav" rel="stylesheet">
 <!--   <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/style.css') }}">
   <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/responsive.css') }}">
   
  -->
  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-  <script>
+  <!-- <script>
     $(function() {
       $('a[href*=#]:not([href=#])').click(function() {
         if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
@@ -32,11 +42,10 @@
         }
       });
     });
-  </script>
+  </script> -->
 
 
-
-
+  
 </head>
 
 
@@ -48,63 +57,106 @@
 <!-- https://codepen.io/jacobchavezjr/pen/xdgbG?editors=1100
  -->
 <body>
+<!-- 
+  <script type="text/javascript">
+    
+  $(document).ready(function() {
+      
+      //activate wow.js
+       new WOW().init();
+    
+      //activate fullpage.js
+      $('#fullpage').fullpage({
+        scrollBar: true,
+        navigation: true,
+        navigationTooltips: ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4'],
+        loopBottom: true,
+        sectionSelector: 'section'
+      });
+    
+    //apply color to each section from array
 
-  <container id="fullpage">
+    $('section').each(function(){
+  
+      $(this).addClass('grid-item-' + int).css();
+    });
+    
+  });
 
-    <header>
-
-    <nav>
-<!--        <a href="#home" class="logo"><img src="../static/localbeats.png" width="10%" height="10%" alt="logo" ></a> -->
-
-
-      <div class="shade">
-
-        <ul>
-          <!-- <li><a href="index.html" class="logo"><img src="../static/localbeats.png" width="70" height="70" onclick="window.location.href='/'" alt="logo" ></a></li> -->
-
-<!--           <li><a href="#home"> Home </a></li>
+  </script>
  -->
-          <li><a href="#map"> Map </a></li>
+
+
+
+
+  <header>
+<a href="#" class="open">&equiv;</a>
+<a href="#cl" class="close hidden">&times;</a>
+
+<nav>
+  <br>
+  <a href="#home" ><img src="../static/localbeats.png" width="70%" height="70%" alt="logo" ></a>
+<br>
+  <a href="#map">Map</a>
+  <a href="#search">Search</a>
+  <a href="#adduser">Add User</a>
+  <a href="#about">About</a>
+  <p>
+    Local Beats > &copy; 2018
+  </p>
+  <hr />
+  @JP Roeser
+</nav>
+
+
+
+<!--     <nav>
+      <div class="shade">
+        <ul>
           <li><a href="#search"> Search </a></li>
+          <li><a href="#map"> Map </a></li>
           <li><a href="#adduser"> Add User </a></li>
           <li><a href="#about"> About </a></li>
         </ul>
       </div>
-    </nav>
-  </header>
-  <div class="page-container">
+       <a href="#home" class="logo"><img src="../static/localbeats.png" width="10%" height="10%" alt="logo" ></a>
+    </nav> -->
 
-<!-- 
-  <header>
-    <nav id = "top-nav" class="top-nav">
-      <div class="logo">
-      <a href="index.html" class="logo"><img src="../static/localbeats.png" width="200" height="200" onclick="window.location.href='/'" alt="logo" class="center"></a>
-          </div>
-         <ul class>
-              <li><a class="current-page" href="index.html">HOME</a></li>
-              <li><a href="#">Topic One</a></li>
 
-              <li><a href="index.html" ><img src="../static/localbeats.png" width="200" height="200" onclick="window.location.href='/'" alt="logo" class="center"></a></li>
-
-              <li><a href="#">Topic Two</a></li>
-              <li><a href="images.html">Images</a></li>
-          </ul>   
-      </nav>
   </header>
 
- -->
+
 <!-- //////////////////////////////////HOME////////////////////////////////////////////// -->
-<div id ="home"> </div>
-  <div class="section home">
 
-  <div>
+
+
+<section id = "home"><div class="section home">
+  <br><br><br>
+  <center><img class="logo" src="../static/localbeats.png" width="20%" height="20%" alt="logo" ></center>
+
+<!--   <div>
   {% for message in get_flashed_messages() %}
     <h3>{{ message }}</h3>
   {% endfor %}
   </div>
+ -->
+  <h1>Connect with your local SoundCloud community</h1>
+  <h2>Search through a database of SoundCloud users to explore your local creative community. Discover new artists, find new sounds, and connect with local talent!</h2>
 
-  <h1 class="center">Connect with your local SoundCloud community</h1>
+<br>
+<br>
+<div id = "home_buttons">
+<button class="button button1" onClick="document.getElementById('search').scrollIntoView({behavior: 'smooth'}); "  >Search For Users</button>
+<button class="button button1" onClick="document.getElementById('adduser').scrollIntoView({behavior: 'smooth'}); "  >Add Users</button>
 </div>
+
+</div>
+
+
+</section>
+
+
+
 <!-- //////////////////////////////////MAP////////////////////////////////////////////// -->
 <!-- 
  <div id="map"> </div>
@@ -113,7 +165,7 @@
 <!--  <div class="section map"> -->
     
 
-  <div id="map" class="section map"></div>
+  <section id="map"><div id="map" class="section map"></div>
   <script>
 
     function initMap() {
@@ -166,9 +218,12 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 <!-- //////////////////////////////////SEARCH////////////////////////////////////////////// -->
 
 <!--     <div id ="search"> </div>
- -->    <div id ="search" class="section search">
+ -->    
+</section>
 
-<h1 class="center">Search for SoundCloud users near you</h1>
+<section id="search"><!-- <div id ="search" class="section search"></div> -->
+
+<h1>Search for SoundCloud users near you</h1>
 
 
 
@@ -180,22 +235,22 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
         {{ error }}
       {% endfor %}
   {% endif %}
-  <p>{{ form.searchzip.label }}{{ form.searchzip() }}</p>
+  {{ form.searchzip.label }}{{ form.searchzip() }}
   {% if form.searchradius.errors %}
       {% for error in form.searchradius.errors %}
         {{ error }}
       {% endfor %}
   {% endif %}
-  <p>{{ form.searchradius.label }}{{ form.searchradius() }}</p>
+  {{ form.searchradius.label }}{{ form.searchradius() }}<br><br>
 
 
   {{ form.submit() }}
 </div>
 </form>
 
-</div>
 
 
+</section>
 
 
 <!-- <br><br><br>
@@ -209,11 +264,12 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 
 <!-- //////////////////////////////////ADD USER////////////////////////////////////////////// -->
 
-    <div id ="adduser"> </div>
+    <section id = "adduser"><div id ="adduser"> </div>
     <div class="section adduser">
   
+  
 
-<button class="button button1" onclick="window.location.href='/adduser'" style="float: right;margin-left:auto;margin-right:40%;display:block;margin-top:0px;margin-bottom:0%; " >Add SC User</button>
+<button class="button button1" onclick="window.location.href='/adduser'"  >Add SC User</button>
 
   </div>
 
@@ -223,8 +279,47 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
   <footer class="footer">
     <p>This site was created by James Roeser &copy; 2018</p>
   </footer>
+</section>
 
-</container>
+<!-- </container> -->
+
+
+<!-- <script source= https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js></script>
+
+<script source= https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js></script>
+
+<script source= https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.7.4/jquery.fullPage.min.js></script>
+ -->
+
+<script type="text/javascript">
+    
+  $('.open').on('click',function(e){
+    e.preventDefault();
+    $(this).addClass('hidden');
+    $('.close').removeClass('hidden');
+    $('nav').addClass('slide');
+  });
+
+  $('.close').on('click',function(e){
+    e.preventDefault();
+    $(this).addClass('hidden');
+    $('.open').removeClass('hidden');
+    $('nav').removeClass('slide');
+  });
+
+  $("nav a").click(function() {
+    
+    var s = $(this).attr('href');
+      $('html,body').animate({scrollTop: $(s).offset().top}, 200, "swing");
+    return false;
+    });
+
+  </script>
+
+<script source= https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js></script>
+
+
+
 </body>
 </html>
 

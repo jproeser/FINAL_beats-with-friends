@@ -82,4 +82,3 @@ import googlemaps
 
 import numpy as np
 import codecs, json 
-
