@@ -211,7 +211,7 @@ class ZipSearchForm(FlaskForm):
         if searchradius is "0":
             raise ValidationError('Please enter a number larger than 1')
     
-    submit = SubmitField('Submit')
+    submit = SubmitField('Search')
 
 ##################################################################
 
@@ -558,6 +558,9 @@ def zipsearch():
         searchradius = search_form.searchradius.data
         return redirect(url_for('searchresults', searchzip = searchzip, searchradius=searchradius))
 
+    ## trying to keep on same page
+    # else:
+        
     return render_template('homepage.html', form=search_form, x=x)
 
 @app.route('/searchresults/<searchzip>-<searchradius>', methods = ['GET', 'POST'])
@@ -600,7 +603,7 @@ def adduser():
         #print('**********************',sc_username)
 
         get_or_create_scaccount(db_session=db.session, sc_url = form_adduser.soundcloud.data ,sc_zip = form_adduser.zipcode.data, sc_username = sc_username)
-        flash ('thanks! (delete this later)')
+        # flash ('thanks! (delete this later)')
         return redirect(url_for('addanother', sc_username = sc_username))
 
     return render_template('addaccount.html', form=form_adduser) 

@@ -27,6 +27,7 @@
 }
 
 footer{
+  margin: 20vh 0px 0px 0px;
   color: #F54320;
   background-color: #DBE9EE;
   text-align: center;
@@ -348,11 +349,11 @@ h3
 }
 
 h4 {
-  margin: 30;
-  padding: 40px;
+  margin: 20;
+  padding: 30px;
   color: #466995;
   font-family: 'Yantramanav', sans-serif;
-  font-size: 25px;
+  font-size: 30px;
   font-weight: 300;
   letter-spacing: 2px;
   text-align: center;
@@ -1072,6 +1073,9 @@ input {
 }
 
 
+.flash          { background: #cee5F5; padding: 0.5em;
+                  border: 1px solid #aacbe2; }
+.error          { background: #f0d6d6; padding: 0.5em; }
 
 @media only screen and (min-width: 1000px) {
 
