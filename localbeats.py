@@ -155,7 +155,7 @@ class LoginForm(FlaskForm):
 
 class AddSC(FlaskForm):
     # name = StringField('<h4>What is your name?<br/></h4>', [Required()])
-    soundcloud = StringField('<h4>SoundCloud<i> URL</h4></i><p></p><br/>', validators=[Required()])#, Regexp('^https://soundcloud.com/','Please enter a valid URL')])
+    soundcloud = StringField('<h2>SoundCloud<i> URL</h2></i><p></p><br/>', validators=[Required()])#, Regexp('^https://soundcloud.com/','Please enter a valid URL')])
     def validate_soundcloud(self,field):
         soundcloud=field.data
         x = re.match('^https://soundcloud.com/',soundcloud)
@@ -164,7 +164,7 @@ class AddSC(FlaskForm):
 
             raise ValidationError('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
             flash ('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
-    zipcode = StringField('<h4>Zipcode<br/></h4>', validators=[Required()])
+    zipcode = StringField('<h2>Zipcode<br/></h2>', validators=[Required()])
     def validate_zipcode(self,field):
         zipcode=field.data
         search = ZipcodeSearchEngine()
@@ -557,8 +557,6 @@ def zipsearch():
         searchzip = search_form.searchzip.data
         searchradius = search_form.searchradius.data
         return redirect(url_for('searchresults', searchzip = searchzip, searchradius=searchradius))
-
-
 
     return render_template('homepage.html', form=search_form, x=x)
 

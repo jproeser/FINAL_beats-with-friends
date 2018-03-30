@@ -1,17 +1,3 @@
-<!-- <center><img src="/static/localbeats.png"  position = "bottom" width="200;" height="200;" padding="auto" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
-
-<body bgcolor="#C79B71">
-
-<style>
-h1 {color:#FFF2E3;text-align:center;font-size:35px;font-family:Tahoma;}
-h2 {color:#31C3E9;text-align:center;font-size:25px;font-family:Tahoma;}
-h3 {color:#082026;text-align:center;font-size:23px;font-family:Tahoma;}
-h4 {color:#13343C;text-align:center;font-size:18px;font-family:Tahoma;}
-p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
-</style>
-
- -->
-
 <!DOCTYPE html> 
 <html lang="en">
 <head>
@@ -19,22 +5,41 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <link rel="stylesheet" type="text/css" href="./static/css/style.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Yantramanav" rel="stylesheet">
 
-<!--   <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/style.css') }}">
-  <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/responsive.css') }}">
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   
- -->
 </head>
 
-
 <body>
-  <img class="logo" src="/static/localbeats.png"  width="200" height="200" onclick="window.location.href='/'" alt="logo">
+<header>
+<a href="#" class="open">&equiv;</a>
+<a href="#cl" class="close hidden">&times;</a>
 
-  <h1>Add a SoundCloud User!</h1>
+<nav>
+  <br>
+  <a href="/" ><img src="../static/localbeats.png" width="70%" height="70%" alt="logo" ></a>
+<br>
+  <a href="/map">Map</a>
+  <a href="#search">Search</a>
+  <a href="#adduser">Add User</a>
+  <a href="#about">About</a>
+  <p>
+    Local Beats > &copy; 2018
+  </p>
+  <hr />
+  @JP Roeser
+</nav>
 
 
 
+
+<!-- <img src="/static/localbeats.png"  position = "bottom" width="100%" height="200;" padding="auto" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
+ -->
+
+</header>
+<span id="edit-img"><div id="toplogo"> <img src="../static/localbeats.png" width="40%" height="40%" alt="logo" top-margin="20px;"></div></span>
 <!-- {% for field, errors in form.errors.items() %}
 <div class="alert alert-error">
     {{ form[field].label }}: {{ ', '.join(errors) }}
@@ -43,7 +48,7 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
  -->
 
 <form method="POST">
-
+<div class="center">
   {{ form.hidden_tag() }}
   {% if form.soundcloud.errors %}
       {% for error in form.soundcloud.errors %}
@@ -60,7 +65,41 @@ p {color:#13343C;text-align:center;font-size:15px;font-family:Tahoma;}
 
 
   {{ form.submit() }}
-
+</div>
 </form>
+  
+
+
+
+
+<script type="text/javascript">
+    
+  $('.open').on('click',function(e){
+    e.preventDefault();
+    $(this).addClass('hidden');
+    $('.close').removeClass('hidden');
+    $('nav').addClass('slide');
+  });
+
+  $('.close').on('click',function(e){
+    e.preventDefault();
+    $(this).addClass('hidden');
+    $('.open').removeClass('hidden');
+    $('nav').removeClass('slide');
+  });
+
+  $("nav a").click(function() {
+    
+    var s = $(this).attr('href');
+      $('html,body').animate({scrollTop: $(s).offset().top}, 200, "swing");
+    return false;
+    });
+
+  </script>
+
+<script source= https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js></script>
+
+
+
 </body>
 </html>

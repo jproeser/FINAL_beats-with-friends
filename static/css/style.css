@@ -2,12 +2,8 @@
 
 
 
-/*.logo{
-  margin: 0;
-  text-align: center;
-  padding: 0;
-}
-*/
+
+
 /*-----FOOTER-----*/
 
 /*footer {
@@ -939,6 +935,85 @@ font-weight: 200;
   vertical-align: middle;
 }
 
+#toplogo{
+
+  margin: 20px 0px ;
+  text-align: center;
+  padding: 0;
+}
+
+
+/*#toplogo:hover img{
+  background-image: url("../static/lb_blue.png");
+  margin: 20px 0px ;
+  text-align: center;
+  padding: 0;
+}
+*/
+/*
+#edit-img:hover img {
+    -webkit-filter: invert(100%);
+}*/
+
+input[type=text] {
+    padding:1px; 
+    border:2px solid #FFDFB5; 
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    letter-spacing: 2px;
+    padding: 2vh 60px 2vh 60px;
+
+    font-family: 'Yantramanav', sans-serif;
+    font-style: medium;
+
+    font-size: 15px;
+    text-transform: uppercase;
+    color: #1F2633;
+
+    -webkit-animation:/* flyIn 2s,*/ fade 3s;
+      
+    animation: fade 3s;
+    text-align: center;
+    font-weight: 200;
+
+}
+
+input[type=submit] {
+    background-color: transparent; 
+    border: 2px solid #FFDFB5;
+    height: 60px;
+    width: 120px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 30px 90px;
+    -webkit-transition-duration: 0.4s; 
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #FFDFB5;
+    font-family: 'Yantramanav', sans-serif;
+    vertical-align: middle;
+}
+
+input[type=submit]:hover {
+    background-color: #FFDFB5;
+    border: 2px solid #FFDFB5;
+    height: 60px;
+    width: 120px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 30px 90px;
+    -webkit-transition-duration: 0.4s; 
+    transition-duration: 0.4s;
+    cursor: pointer; 
+    border-radius: 4px; 
+    color: #1F2633;
+    font-family: 'Yantramanav', sans-serif;
+    vertical-align: middle;
+
+}
 
 
 

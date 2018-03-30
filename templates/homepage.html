@@ -95,11 +95,11 @@
 
 <nav>
   <br>
-  <a href="#home" ><img src="../static/localbeats.png" width="70%" height="70%" alt="logo" ></a>
+  <a href="/" ><img src="../static/localbeats.png" width="70%" height="70%" alt="logo" ></a>
 <br>
   <a href="#map">Map</a>
   <a href="#search">Search</a>
-  <a href="#adduser">Add User</a>
+  <a href="/adduser">Add User</a>
   <a href="#about">About</a>
   <p>
     Local Beats > &copy; 2018
@@ -147,7 +147,7 @@
 <br>
 <div id = "home_buttons">
 <button class="button button1" onClick="document.getElementById('search').scrollIntoView({behavior: 'smooth'}); "  >Search For Users</button>
-<button class="button button1" onClick="document.getElementById('adduser').scrollIntoView({behavior: 'smooth'}); "  >Add Users</button>
+<button class="button button1" onclick="window.location.href='/adduser'"  >Add Users</button>
 </div>
 
 </div>
@@ -267,7 +267,7 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
     <section id = "adduser"><div id ="adduser"> </div>
     <div class="section adduser">
   
-  
+
 
 <button class="button button1" onclick="window.location.href='/adduser'"  >Add SC User</button>
 
@@ -275,11 +275,11 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 
 </div>
 
+</section>
 
   <footer class="footer">
     <p>This site was created by James Roeser &copy; 2018</p>
   </footer>
-</section>
 
 <!-- </container> -->
 
