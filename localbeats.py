@@ -557,10 +557,7 @@ def zipsearch():
         searchzip = search_form.searchzip.data
         searchradius = search_form.searchradius.data
         return redirect(url_for('searchresults', searchzip = searchzip, searchradius=searchradius))
-
-    ## trying to keep on same page
-    # else:
-        
+    
     return render_template('homepage.html', form=search_form, x=x)
 
 @app.route('/searchresults/<searchzip>-<searchradius>', methods = ['GET', 'POST'])

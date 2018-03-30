@@ -1,35 +1,50 @@
-<script>
-function goBack() {
-    window.history.back();
-}
-</script>
 
+<!DOCTYPE html> 
+<html lang="en">
 <head>
-<link href="./style.css" type="text/css" rel="stylesheet">
+  <title>Local Beats</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Yantramanav" rel="stylesheet">
+
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  
 </head>
 
+<body>
+<header>
+<a href="#" class="open">&equiv;</a>
+<a href="#cl" class="close hidden">&times;</a>
 
-<element onclick="script">
+<nav>
+  <br>
+  <a href="/" ><img src="../static/localbeats.png" width="70%" height="70%" alt="logo" ></a>
+<br>
+  <a href="/#map">Map</a>
+  <a href="/#search"  >Search</a>
 
-<div align="center">
+  <a href="#adduser">Add User</a>
+  <a href="#about">About</a>
+  <p>
+    Local Beats > &copy; 2018
+  </p>
+  <hr />
+  @JP Roeser
+</nav>
+</header>
 
-<div style="text-align:center;">
-
-
-
-
-<center><img src="/static/localbeats.png"  position = "bottom" width="200;" height="200;" padding="auto" margin="auto" onclick="window.location.href='/'"align="bottom"></center>
-
-<body bgcolor="#C79B71">
-
-
-
+<span id="edit-img"><div id="toplogo"> <img src="../static/localbeats.png" width="25%" height="25%" alt="logo" top-margin="20px;"></div></span>
 
 
 
 
-<button class="button button1" onclick="goBack()" style="text-align:center;">Go Back</button>
-<button class="button button1" onclick="window.location.href='/'" style="text-align:center;">Go Home</button>
+
+
+
+<button class="button button2" onclick="goBack()" style="text-align:center;">Go Back</button>
+<button class="button button2" onclick="window.location.href='/'" style="text-align:center;">Go Home</button>
 
 {% if lenusers == 0 %}
 <h3> Sorry, no SoundCloud accounts from this area have been added to our database yet </h3>
@@ -87,11 +102,57 @@ function goBack() {
 
     </script> 
     <br>   
-    <iframe id="{{ u.Username }}" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ u.Songs[0] }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true" width="400" height="400" scrolling="no" frameborder="yes" ></iframe>  
-    <br><button class="button button1" onClick="newSrc('{{ u.Username }}',{{ u.Songs }});">Random Song from User</button>
+    <iframe class= "scsong" id="{{ u.Username }}" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ u.Songs[0] }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true" width="400" height="400" scrolling="no" frameborder="yes" ></iframe>  
+    <br><button class="button randomsong" onClick="newSrc('{{ u.Username }}',{{ u.Songs }});">Random Song from User</button>
 
 
 {% endfor %}
 <!-- http://jsfiddle.net/z47XP/
  -->
 <br></br>
+
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+
+
+<element onclick="script">
+
+
+
+<script type="text/javascript">
+    
+  $('.open').on('click',function(e){
+    e.preventDefault();
+    $(this).addClass('hidden');
+    $('.close').removeClass('hidden');
+    $('nav').addClass('slide');
+  });
+
+  $('.close').on('click',function(e){
+    e.preventDefault();
+    $(this).addClass('hidden');
+    $('.open').removeClass('hidden');
+    $('nav').removeClass('slide');
+  });
+
+  $("nav a").click(function() {
+    
+    var s = $(this).attr('href');
+      $('html,body').animate({scrollTop: $(s).offset().top}, 200, "swing");
+    return false;
+    });
+
+  </script>
+
+<script source= https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js></script>
+
+
+
+</body>
+</html>
+
