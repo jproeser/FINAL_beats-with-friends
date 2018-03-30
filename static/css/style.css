@@ -321,15 +321,16 @@ font-weight: 200;
 
 
 h2{
-  margin: 0;
-  padding: 20px;
-
-  color: #333;
+  margin: 0px 40px;
+  padding: 0px 90px;
+  color: #FFB881;
   font-family: 'Yantramanav', sans-serif;
-  font-size: 26px;
-  font-weight: 100;
-/*  margin: 0 auto 20px auto;
-*/}
+  font-size: 30px;
+  font-weight: 50;
+  -webkit-animation: fade 4s;
+  animation: fade 4s;
+  text-align: center;
+}
 
 h3
 {
@@ -956,7 +957,6 @@ font-weight: 200;
 }*/
 
 input[type=text] {
-    padding:1px; 
     border:2px solid #FFDFB5; 
     -webkit-border-radius: 3px;
     border-radius: 3px;
@@ -1015,7 +1015,9 @@ input[type=submit]:hover {
 
 }
 
-
+input {
+    width: 50%;
+}
 
 @media only screen and (min-width: 1000px) {
 

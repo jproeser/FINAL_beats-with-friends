@@ -55,14 +55,14 @@
         {{ error }}
       {% endfor %}
   {% endif %}
-  <p>{{ form.soundcloud.label }}{{ form.soundcloud() }}</p>
+  {{ form.soundcloud.label }}{{ form.soundcloud() }}
   {% if form.zipcode.errors %}
       {% for error in form.zipcode.errors %}
         {{ error }}
       {% endfor %}
   {% endif %}
-  <p>{{ form.zipcode.label }}{{ form.zipcode() }}</p>
-
+  {{ form.zipcode.label }}{{ form.zipcode() }}
+<br><br>
 
   {{ form.submit() }}
 </div>
