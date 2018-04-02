@@ -132,7 +132,7 @@
 
 <section id = "home"><div class="section home">
   <br><br><br>
-  <center><img class="logo" src="../static/localbeats.png" width="20%" height="20%" alt="logo" ></center>
+  <center><img class="logo" src="../static/localbeats.png" onClick="window.location.href='/'" width="25%" height= 25%" alt="logo" ></center>
 
 <!--   <div>
   {% for message in get_flashed_messages() %}
@@ -228,7 +228,7 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 
 
 <form method="POST">
-<div class=center>
+<div id=search_form>
   {{ form.hidden_tag() }}
   {% if form.searchzip.errors %}
       {% for error in form.searchzip.errors %}
@@ -278,6 +278,7 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 </section>
 
   <footer class="footer">
+    <hr/>
     <p>This site was created by James Roeser &copy; 2018</p>
   </footer>
 
