@@ -139,8 +139,8 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email:', validators=[Required(),Length(1,64),Email()])
 
     #username = StringField('Username:',validators=[Required(),Length(1,64),Regexp('^[A-Za-z][A-Za-z0-9_.]*$',0,'Usernames must have only letters, numbers, dots or underscores')])
-    soundcloud = StringField('<h4>SoundCloud<i> URL</h4></i>', [Required(message="required"),validators.Regexp('^https://soundcloud.com/', message="Please enter a valid account")])
-    zipcode = StringField('<h4>Zipcode<br/></h4>', [Required()])
+    soundcloud = StringField('SoundCloud<i> URL</i>', [Required(message="required"),validators.Regexp('^https://soundcloud.com/', message="Please enter a valid account")])
+    zipcode = StringField('Zipcode<br/>', [Required()])
 
     password = PasswordField('Password:',validators=[Required(),EqualTo('password2',message="Passwords must match")])
     password2 = PasswordField("Confirm Password:",validators=[Required()])
@@ -163,7 +163,7 @@ class LoginForm(FlaskForm):
 
 class AddSC(FlaskForm):
     # name = StringField('<h4>What is your name?<br/></h4>', [Required()])
-    soundcloud = StringField('<h4>SoundCloud<i> URL</i></h4>', validators=[Required()])#, Regexp('^https://soundcloud.com/','Please enter a valid URL')])
+    soundcloud = StringField('SoundCloud<i> URL</i>', validators=[Required()])#, Regexp('^https://soundcloud.com/','Please enter a valid URL')])
     def validate_soundcloud(self,field):
         soundcloud=field.data
         x = re.match('^https://soundcloud.com/',soundcloud)
@@ -172,7 +172,7 @@ class AddSC(FlaskForm):
 
             raise ValidationError('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
             flash ('Please enter a valid SoundCloud URL, beginning with https://soundcloud.com/')
-    zipcode = StringField('<h4>Zipcode</h4>', validators=[Required()])
+    zipcode = StringField('Zipcode', validators=[Required()])
     def validate_zipcode(self,field):
         zipcode=field.data
         search = ZipcodeSearchEngine()

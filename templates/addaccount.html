@@ -51,7 +51,7 @@
 <div class="center">
   {{ form.hidden_tag() }}
 
-  {{ form.soundcloud.label }}
+  <h4>{{ form.soundcloud.label }}</h4>
   {% if form.soundcloud.errors %}
       {% for error in form.soundcloud.errors %}
         <h2>{{ error }}</h2>        
@@ -61,7 +61,7 @@
   {{ form.soundcloud() }}
 
 
-  {{ form.zipcode.label }}
+  <h4>{{ form.zipcode.label }}</h4>
 
   {% if form.zipcode.errors %}
       {% for error in form.zipcode.errors %}
@@ -92,8 +92,8 @@
 
 
 
-<script type="text/javascript">
-    
+<script> 
+
   $('.open').on('click',function(e){
     e.preventDefault();
     $(this).addClass('hidden');
@@ -115,9 +115,9 @@
     return false;
     });
 
-  </script>
+</script>
 
-<script source= https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js></script>
+<script src= https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js></script>
 
 
 
