@@ -39,7 +39,7 @@
 
 </header>
 <br>
-<span id="edit-img"><div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="35%" height="35%" alt="logo" top-margin="20px;"></div></span>
+<span id="edit-img"><div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="30%" height="30%" alt="logo" top-margin="20px;"></div></span>
 
 <h3>Thank you for adding {{ sc_username }}!</h3>
 
@@ -69,19 +69,25 @@
  -->
 <form method="POST">
 <div id = add_form>
-      {{ form.hidden_tag() }}
-      {% if form.soundcloud.errors %}
-          {% for error in form.soundcloud.errors %}
-           <h2> {{ error }}</h2>
-          {% endfor %}
-      {% endif %}
-      {{ form.soundcloud.label }}{{ form.soundcloud() }}
-      {% if form.zipcode.errors %}
-          {% for error in form.zipcode.errors %}
-           <h2> {{ error }}</h2>
-          {% endfor %}
-      {% endif %}      
-      {{ form.zipcode.label }}{{ form.zipcode() }}
+    {{ form.hidden_tag() }}
+
+    {{ form.soundcloud.label }}
+    {% if form.soundcloud.errors %}
+      {% for error in form.soundcloud.errors %}
+       <h2> {{ error }}</h2>
+      {% endfor %}
+    {% endif %}
+
+    {{ form.soundcloud() }}
+
+    {{ form.zipcode.label }}
+    {% if form.zipcode.errors %}
+      {% for error in form.zipcode.errors %}
+       <h2> {{ error }}</h2>
+      {% endfor %}
+    {% endif %}      
+    
+    {{ form.zipcode() }}
 <br>
       {{ form.submit() }}
 </div>

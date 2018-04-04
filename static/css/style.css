@@ -27,7 +27,7 @@
 footer{
   margin: 2vh 0px 0px 0px;
   color: #FFDFB5;
-  background-color: #1C2A3B;
+  background-color: #1C222E;
   text-align: center;
 /*  height: 100px;
 */  font-size: .85em;
@@ -611,10 +611,7 @@ li
 }
 
 nav a.logo 
-{
-/*  float:left;
-*//*  position: absolute;
-*/  
+{ 
   display: inline;
   vertical-align: center;
   line-height: 100px;
@@ -1166,7 +1163,7 @@ background:url(http://i58.tinypic.com/29cqp88.jpg) center no-repeat;
 #home_buttons{
   align-content: middle;
   text-align: center;
-  margin: 80px 10px;
+  margin: 30px 10px;
   vertical-align: middle;
 }
 

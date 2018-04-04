@@ -39,29 +39,36 @@
 
 </header>
 <br>
-<span id="edit-img"><div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="35%" height="35%" alt="logo" top-margin="20px;"></div></span>
+<span id="edit-img"><div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="30%" height="30%" alt="logo" top-margin="20px;"></div></span>
 <!-- {% for field, errors in form.errors.items() %}
 <div class="alert alert-error">
     {{ form[field].label }}: {{ ', '.join(errors) }}
 
 {% endfor %}
  -->
-<br><br><br>
+<br>
 <form method="POST">
 <div class="center">
   {{ form.hidden_tag() }}
+
+  {{ form.soundcloud.label }}
   {% if form.soundcloud.errors %}
       {% for error in form.soundcloud.errors %}
-        <h2>{{ error }}</h2>
+        <h2>{{ error }}</h2>        
       {% endfor %}
   {% endif %}
-  {{ form.soundcloud.label }}{{ form.soundcloud() }}
+
+  {{ form.soundcloud() }}
+
+
+  {{ form.zipcode.label }}
+
   {% if form.zipcode.errors %}
       {% for error in form.zipcode.errors %}
         <h2>{{ error }}</h2>
       {% endfor %}
   {% endif %}
-  {{ form.zipcode.label }}{{ form.zipcode() }}
+  {{ form.zipcode() }}
 <!-- 
   {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -75,7 +82,7 @@
 {% block body %}{% endblock %} -->
 
 
-<br><br>
+<br>
 
   {{ form.submit() }}
 </div>

@@ -5,118 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
-
-<!-- <link rel="stylesheet" type="text/css" href= "https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.7.4/jquery.fullPage.min.css">
-<link rel="stylesheet" type="text/css" href= "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href= "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href= "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-
- -->
-
   <link rel="stylesheet" type="text/css" href="../static/css/style.css">
-<link href="https://fonts.googleapis.com/css?family=Yantramanav" rel="stylesheet">
-<!--   <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/style.css') }}">
-  <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/responsive.css') }}">
-  
- -->
- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Yantramanav" rel="stylesheet">
 
-<!--   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-  <script>
-    $(document).ready(function(){ 
-      //Use the .attr method to get attributes
-      
-      // Use the .text method to update the content:
-      // selector.text(newValue)
-
-      // Use the .css method to update the content:
-      // selector.css(attribute, newValue)
-
-
-        $(".logo" ).on('focus mouseover',function() {
-          // 1) Take the alt text of the preview picture I just put into focus
-          // 2) Use this to set the text of the image
-        $("#image").text($(this).attr("alt"));
-        $("#image").css('image', 'url(../static/localbeats.png)');
-        })
-
-        $(".logo" ).on('blur mouseleave',function() {
-        $("#image").text("Hover over an image below");
-        $("#image").css('background-image', '');
-      })
-    });
-    </script>
- -->
-
-  <!-- <script>
-    $(function() {
-      $('a[href*=#]:not([href=#])').click(function() {
-        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-
-          var target = $(this.hash);
-
-          headerHeight = $(".shade").height() + 5; // Get fixed header height
- 
-
-          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-          if (target.length) {
-            $('html,body').animate({
-              scrollTop: target.offset().top - headerHeight
-            }, 1000);
-            return false;
-          }
-        }
-      });
-    });
-  </script> -->
-
-
-  
 </head>
 
 
-
-
-
-
-
-<!-- https://codepen.io/jacobchavezjr/pen/xdgbG?editors=1100
- -->
 <body>
-<!-- 
-  <script type="text/javascript">
-    
-  $(document).ready(function() {
-      
-      //activate wow.js
-       new WOW().init();
-    
-      //activate fullpage.js
-      $('#fullpage').fullpage({
-        scrollBar: true,
-        navigation: true,
-        navigationTooltips: ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4'],
-        loopBottom: true,
-        sectionSelector: 'section'
-      });
-    
-    //apply color to each section from array
 
-    $('section').each(function(){
-  
-      $(this).addClass('grid-item-' + int).css();
-    });
-    
-  });
-
-  </script>
- -->
-
-
-
-  <header>
+<header>
 <a href="#" class="open">&equiv;</a>
 <a href="#cl" class="close hidden">&times;</a>
 
@@ -131,25 +30,9 @@
  -->   
  <br><br><br><hr/>
  <p> Local Beats &copy; 2018 </p>
- 
-<!--   @JP Roeser -->
+
 </nav>
 
-
-
-
-
-<!--     <nav>
-      <div class="shade">
-        <ul>
-          <li><a href="#search"> Search </a></li>
-          <li><a href="#map"> Map </a></li>
-          <li><a href="#adduser"> Add User </a></li>
-          <li><a href="#about"> About </a></li>
-        </ul>
-      </div>
-       <a href="#home" class="logo"><img src="../static/localbeats.png" width="10%" height="10%" alt="logo" ></a>
-    </nav> -->
 
 
   </header>
@@ -165,7 +48,7 @@
 
 <!--   <div id="toplogo_main"></div> -->
 
-  <center><img class="logo" src="../static/localbeats.png" onClick="window.location.href='/'" width="25%" height= 25%" alt="logo" ></center>
+<span id="edit-img"><div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="30%" height="30%" alt="logo" top-margin="20px;"></div></span>
 
 <!--   <div>
   {% for message in get_flashed_messages() %}
@@ -253,7 +136,7 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
  -->    
 </section>
 
-<section id="search"><!-- <div id ="search" class="section search"></div> -->
+<section id="search"> <!-- <div id ="search" class="section search"></div> -->
 
 <h1>Search for SoundCloud users near you</h1>
 
@@ -263,21 +146,26 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 <div id=search_form>
   {{ form.hidden_tag() }}
 
+
+  {{ form.searchzip.label }}
+
   {% if form.searchzip.errors %}
       {% for error in form.searchzip.errors %}
         <h2>{{ error }}</h2>
       {% endfor %}
   {% endif %}
 
-  {{ form.searchzip.label }}{{ form.searchzip() }}
+  {{ form.searchzip() }}
+
+  {{ form.searchradius.label }}
 
   {% if form.searchradius.errors %}
       {% for error in form.searchradius.errors %}
        <h2>{{ error }}</h2>
       {% endfor %}
   {% endif %}
-  
-  {{ form.searchradius.label }}{{ form.searchradius() }}<br><br>
+
+  {{ form.searchradius() }}<br><br>
 
 
   {{ form.submit() }}
@@ -306,10 +194,12 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 
 <!-- <button class="button button1" onclick="window.location.href='/adduser'"  >Add SC User</button>
  -->
-  </div>
+
+
+<!--   </div>
 
 </div>
-
+ -->
 </section>
 
   <footer class="footer">
@@ -327,32 +217,32 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 <script source= https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.7.4/jquery.fullPage.min.js></script>
  -->
 
-<script type="text/javascript">
-    
-  $('.open').on('click',function(e){
-    e.preventDefault();
-    $(this).addClass('hidden');
-    $('.close').removeClass('hidden');
-    $('nav').addClass('slide');
+<script>
+  
+$('.open').on('click',function(e){
+  e.preventDefault();
+  $(this).addClass('hidden');
+  $('.close').removeClass('hidden');
+  $('nav').addClass('slide');
+});
+
+$('.close').on('click',function(e){
+  e.preventDefault();
+  $(this).addClass('hidden');
+  $('.open').removeClass('hidden');
+  $('nav').removeClass('slide');
+});
+
+$("nav a").click(function() {
+  
+  var s = $(this).attr('href');
+    $('html,body').animate({scrollTop: $(s).offset().top}, 200, "swing");
+  return false;
   });
 
-  $('.close').on('click',function(e){
-    e.preventDefault();
-    $(this).addClass('hidden');
-    $('.open').removeClass('hidden');
-    $('nav').removeClass('slide');
-  });
+</script>
 
-  $("nav a").click(function() {
-    
-    var s = $(this).attr('href');
-      $('html,body').animate({scrollTop: $(s).offset().top}, 200, "swing");
-    return false;
-    });
-
-  </script>
-
-<script source= https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js></script>
+<script src= https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js></script>
 
 
 
