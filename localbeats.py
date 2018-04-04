@@ -12,8 +12,16 @@ app.config['SECRET_KEY'] = 'hardtoguessstring'
 #########HEROKU########
 # https://paper.dropbox.com/doc/SI-364-Deploy-Flask-App-on-Heroku-gZyg3VeOIFvNgP41k0FFF
 
+
 app.config['HEROKU_ON'] = os.environ.get('HEROKU')
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL') or "postgresql://localhost/lb9"
+
+if app.config['HEROKU_ON'] == 1:
+    app.DEBUG = False
+else:
+    app.DEBUG = True
+
+
 
 
 
