@@ -256,8 +256,8 @@ footer hr{
 
     height: 55px;
     width: 125px;
-    line-height: 80%;
-    text-align: center;
+/*    line-height: 90%;
+*/    text-align: center;
     text-decoration: none;
 /*    display: inline-flex;*/
     font-size: 23px;
@@ -282,8 +282,8 @@ footer hr{
 
     height: 55px;
     width: 125px;
-    line-height: 80%;
-    text-align: center;
+/*    line-height: 90%;
+*/    text-align: center;
     text-decoration: none;
 /*    display: inline-flex;
 */    font-size: 23px;
@@ -1705,11 +1705,11 @@ h4 {
 
 
 .button7{
-  margin: 20px 30px;
+  margin: 20px 20px;
 }
 
 .button7:hover{
-  margin: 20px 30px;
+  margin: 20px 20px;
 }
 
 
