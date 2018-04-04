@@ -72,13 +72,13 @@
       {{ form.hidden_tag() }}
       {% if form.soundcloud.errors %}
           {% for error in form.soundcloud.errors %}
-            {{ error }}
+           <h2> {{ error }}</h2>
           {% endfor %}
       {% endif %}
       {{ form.soundcloud.label }}{{ form.soundcloud() }}
       {% if form.zipcode.errors %}
           {% for error in form.zipcode.errors %}
-            {{ error }}
+           <h2> {{ error }}</h2>
           {% endfor %}
       {% endif %}      
       {{ form.zipcode.label }}{{ form.zipcode() }}

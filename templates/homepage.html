@@ -262,17 +262,21 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 <form method="POST">
 <div id=search_form>
   {{ form.hidden_tag() }}
+
   {% if form.searchzip.errors %}
       {% for error in form.searchzip.errors %}
-        {{ error }}
+        <h2>{{ error }}</h2>
       {% endfor %}
   {% endif %}
+
   {{ form.searchzip.label }}{{ form.searchzip() }}
+
   {% if form.searchradius.errors %}
       {% for error in form.searchradius.errors %}
-        {{ error }}
+       <h2>{{ error }}</h2>
       {% endfor %}
   {% endif %}
+  
   {{ form.searchradius.label }}{{ form.searchradius() }}<br><br>
 
 
