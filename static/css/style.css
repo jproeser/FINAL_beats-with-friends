@@ -800,11 +800,8 @@ font-style: italic;
 
 
 }
-/*.map
-{
-  background-color: #fff;
-}
-*/
+
+
 .home img{
   text-align: center;
 /*   -webkit-animation: fade 2s;
@@ -818,21 +815,11 @@ font-style: italic;
   height: 100vh;
 }
 
-/*.recent
-{
-  background-color: #1F2633;
-}*/
-
 .adduser
 {
   background-color: #1F2633;
 }
 
-/*.uwyo
-{
-  background-color: #fff;
-}
-*/
 .about
 {
   background-color: #1F2633;
@@ -842,8 +829,7 @@ font-style: italic;
 {
   background-color: #1F2633;
 }
-
-/*GRIDS*/
+/*
 .grid
 {
   overflow: hidden;
@@ -890,7 +876,7 @@ font-style: italic;
   -webkit-border-radius: 4px;
   border-radius: 4px;
 }
-
+*/
 
 /*SPACERS*/
 /*.whiteSpace-small
@@ -981,39 +967,16 @@ transition: margin .5s, height .5s, width .5s, border-radius .5s;
 }
 
 
-
-
-
-
-
-
-/*.map map{
-    padding: 15vh 80px 0px 80px;
-
-animation: flyIn 2s, fade 2s;
-
-}*/
-
-
-
-/*section {
-  font-size: 35px;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-  font-family: 'Raleway', sans-serif;
-}
-*/
-
-
-/*@import url(https://fonts.googleapis.com/css?family=Lato:300,400);
-*/
-
-
-map, body, html{
+map{
 
   height:80%
+
 }
+
+/*html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}*/
 
 /*body{
  background:url(https://subtlepatterns.com/patterns/greyzz.png);
@@ -1587,6 +1550,7 @@ img{
 /*#toplogo{
   margin:20px 0px 0px 0px;
 }*/
+
 @-webkit-keyframes homeFly
 {
   from {padding: 0vh 80px 0px 80px;}
