@@ -1172,8 +1172,13 @@ background:url(http://i58.tinypic.com/29cqp88.jpg) center no-repeat;
   margin: 20px 0px ;
   text-align: center;
   padding: 0;
+
 }
 
+#menu_logo{
+  width: 90%;
+  height: 90%;
+}
 
 /*#toplogo:hover img{
   background-image: url("../static/lb_blue.png");

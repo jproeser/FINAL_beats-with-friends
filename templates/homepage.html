@@ -21,7 +21,7 @@
 
 <nav>
   <br>
-  <a href="/" ><img src="../static/localbeats.png" width="90%" height="90%" alt="logo" ></a>
+  <a href="#home" ><img src="../static/localbeats.png" id="menu_logo" alt="logo" ></a>
 <br>
   <a href="#map">Map</a>
   <a href="#search">Search</a>
@@ -48,7 +48,7 @@
 
 <!--   <div id="toplogo_main"></div> -->
 
-<div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="30%" height="30%" alt="logo" top-margin="20px;"></div>
+<div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="30%" height="30%" alt="logo" ></div>
 
 <!--   <div>
   {% for message in get_flashed_messages() %}
@@ -157,7 +157,7 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 
   {{ form.searchzip() }}
 
-  {{ form.searchradius.label }}
+  <h4>{{ form.searchradius.label }}</h4>
 
   {% if form.searchradius.errors %}
       {% for error in form.searchradius.errors %}
