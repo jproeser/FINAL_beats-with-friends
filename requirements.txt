@@ -26,7 +26,6 @@ MarkupSafe==1.0
 mutagen==1.39
 nltk==3.2.5
 numpy==1.14.2
-post==0.0.13
 psycopg2==2.7.3.2
 public==0.0.44
 pyechonest==9.0.0
