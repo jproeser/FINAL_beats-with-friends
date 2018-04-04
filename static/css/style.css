@@ -1168,9 +1168,9 @@ background:url(http://i58.tinypic.com/29cqp88.jpg) center no-repeat;
 }
 
 #toplogo{
-
-  margin: 20px 0px ;
-  text-align: center;
+  margin: 25px 0px 0px 0px;
+/*  padding: 25px 0px 0px 0px;
+*/  text-align: center;
   padding: 0;
 
 }
@@ -1311,7 +1311,8 @@ input {
 
 #user_results{
 /*  display: inline-flex;
-*/  align-content: center;
+*/  
+  align-content: center;
   text-align: center;
 
 }
@@ -1585,9 +1586,9 @@ img{
   height: 50%;*/
 }
 
-#toplogo{
+/*#toplogo{
   margin:20px 0px 0px 0px;
-}
+}*/
 @-webkit-keyframes homeFly
 {
   from {padding: 0vh 80px 0px 80px;}

@@ -14,26 +14,30 @@
 </head>
 
 <body>
+
 <header>
-<a href="#" class="open">&equiv;</a>
-<a href="#cl" class="close hidden">&times;</a>
+  <a href="#" class="open">&equiv;</a>
+  <a href="#cl" class="close hidden">&times;</a>
 
-<nav>
-  <br>
-  <a href="/" ><img src="../static/localbeats.png" width="90%" height="90%" alt="logo" ></a>
-<br>
-  <a href="/#map">Map</a>
-  <a href="/#search"  >Search</a>
+  <nav>
+      <br>
+      <a href="/#home" ><img src="../static/localbeats.png" id="menu_logo" alt="logo" ></a>
+      <br>
+      <a href="#map">Map</a>
+      <a href="#search">Search</a>
+      <a href="/adduser">Add User</a>
+    <!--   <a href="#about">About</a>
+     -->   
+     <br><br><br>
+     <hr/>
+     <p> Local Beats &copy; 2018 </p>
 
-  <a href="#adduser">Add User</a>
-<!--   <a href="#about">About</a>
- -->   <br><br><br><hr/>
- <p> Local Beats &copy; 2018 </p>
-<!--   @JP Roeser -->
-</nav>
+  </nav>
+
+
 </header>
 
-<div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="30%" height="30%" alt="logo" top-margin="20px;"></div>
+<div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="25%" height="25%" alt="logo" ></div>
 
 
 
@@ -73,7 +77,8 @@
 <div id = user_results>
 
 {% for u in all_user_dictionaries %}
-    <div id=center>
+<!--     <div id=center>
+ -->        
     <hr/>
 	<h5>{{ u.Username }}</h5>
 	<h4>{{ u.Cities }}</h4>
@@ -92,7 +97,8 @@
     {% endif %}
     
 
-    <br><button class="button randomsong" onClick="newSrc('{{ u.Username }}',{{ u.Songs }});"> Random Song from {{ u.Username }}</button>
+    <br>
+    <button class="button randomsong" onClick="newSrc('{{ u.Username }}',{{ u.Songs }});"> Random Song from {{ u.Username }}</button>
     <script type="text/javascript">
         function newSrc(id, array) {
             var random = array[Math.floor(Math.random() * array.length)];
@@ -103,12 +109,15 @@
         }
 
     </script> 
+    <br>
   
-    <center><iframe class= "scsong" id="{{ u.Username }}" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ u.Songs[0] }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true" width="400" height="400" scrolling="no" frameborder="yes" ></iframe>  </center>
+<!--     <center> -->
+        <iframe class= "scsong" id="{{ u.Username }}" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ u.Songs[0] }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true" width="400" height="400" scrolling="no" frameborder="yes" ></iframe>  
+ <!--    </center> -->
     <br><br>
 {% endfor %}
 </div>
-</div>
+<!-- </div> -->
 
 <!-- http://jsfiddle.net/z47XP/
  -->
