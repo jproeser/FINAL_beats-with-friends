@@ -58,7 +58,7 @@
 <h3><i>Here's a random song from all users in your search radius:</i></h3>
 <button class="button randomsong" onClick="newSrc('all',{{ all_song_codes_in_radius }});">Random Song from All Users</button>
 <br>
-<script type="text/javascript">
+<script>
     function newSrc(id, array) {
         var random = array[Math.floor(Math.random() * array.length)];
         var newSrc="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+random+"&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true";
@@ -84,36 +84,31 @@
 	<h4>{{ u.Cities }}</h4>
 
 	{% if u.Soundcloud %}
-		<a href="{{u.Soundcloud}}"target="_blank"><img src="/static/soundcloud.png" alt="Soundcloud" width="50" height="50"/></a>
+		<a href="{{u.Soundcloud}}" target="_blank"><img src="/static/soundcloud.png" alt="Soundcloud" width="50" height="50"/></a>
 	{% endif %}
 	{% if u.Facebook %}
-		<a href="{{u.Facebook}}"target="_blank"><img src="/static/facebook.png" alt="Facebook" width="50" height="50"/></a>
+		<a href="{{u.Facebook}}" target="_blank"><img src="/static/facebook.png" alt="Facebook" width="50" height="50"/></a>
 	{% endif %}
 	{% if u.Twitter %}
-		<a href="{{u.Twitter}}"target="_blank"><img src="/static/twitter.png" alt="Twitter" width="50" height="50"/></a>	
+		<a href="{{u.Twitter}}" target="_blank"><img src="/static/twitter.png" alt="Twitter" width="50" height="50"/></a>	
     {% endif %}
 	{% if u.Instagram %}
-		<a href="{{u.Instagram}}"target="_blank"><img src="/static/instagram.png" alt="Instagram" width="50" height="50"/></a>	
+		<a href="{{u.Instagram}}" target="_blank"><img src="/static/instagram.png" alt="Instagram" width="50" height="50"/></a>	
     {% endif %}
     
 
     <br>
     <button class="button randomsong" onClick="newSrc('{{ u.Username }}',{{ u.Songs }});"> Random Song from {{ u.Username }}</button>
-    <script type="text/javascript">
+    <script>
         function newSrc(id, array) {
             var random = array[Math.floor(Math.random() * array.length)];
             var newSrc="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+random+"&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true";
             var x = document.getElementById(id)
             x.src=newSrc;
-
         }
-
     </script> 
     <br>
-  
-<!--     <center> -->
-        <iframe class= "scsong" id="{{ u.Username }}" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ u.Songs[0] }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true" width="400" height="400" scrolling="no" frameborder="yes" ></iframe>  
- <!--    </center> -->
+    <iframe class= "scsong" id="{{ u.Username }}" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ u.Songs[0] }}&amp;show_artwork=true&amp;visual=true&amp;show_comments=true&amp;hide_related=true&amp;show_user=true" width="400" height="400" scrolling="no" frameborder="yes" ></iframe>  
     <br><br>
 {% endfor %}
 </div>
