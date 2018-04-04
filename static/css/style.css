@@ -1126,7 +1126,7 @@ background:url(http://i58.tinypic.com/29cqp88.jpg) center no-repeat;
 #home_buttons{
   align-content: middle;
   text-align: center;
-  margin: 30px 10px;
+  margin: 30px 10px 100px 10px;
   vertical-align: middle;
 }
 
