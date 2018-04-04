@@ -131,13 +131,11 @@ function goBack() {
 </script>
 
 
+<!-- 
+<element onclick= "script" >
 
-<element onclick="script">
-
-
-
-<script type="text/javascript">
-    
+ -->
+<script>
   $('.open').on('click',function(e){
     e.preventDefault();
     $(this).addClass('hidden');
@@ -158,10 +156,9 @@ function goBack() {
       $('html,body').animate({scrollTop: $(s).offset().top}, 200, "swing");
     return false;
     });
+</script>
 
-  </script>
-
-<script source= https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js></script>
+<script src= https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js></script>
 
 
 
