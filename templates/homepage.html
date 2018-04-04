@@ -48,7 +48,7 @@
 
 <!--   <div id="toplogo_main"></div> -->
 
-<span id="edit-img"><div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="30%" height="30%" alt="logo" top-margin="20px;"></div></span>
+<div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" width="30%" height="30%" alt="logo" top-margin="20px;"></div>
 
 <!--   <div>
   {% for message in get_flashed_messages() %}
@@ -80,7 +80,7 @@
 <!--  <div class="section map"> -->
     
 
-  <section id="map"><div id="map" class="section map"></div>
+  <section id="map"><div class="section map"></div>
   <script>
 
     function initMap() {
@@ -147,7 +147,7 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
   {{ form.hidden_tag() }}
 
 
-  {{ form.searchzip.label }}
+  <h4>{{ form.searchzip.label }}</h4>
 
   {% if form.searchzip.errors %}
       {% for error in form.searchzip.errors %}
@@ -200,7 +200,7 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 
 </div>
  -->
-</section>
+
 
   <footer class="footer">
     <hr/>

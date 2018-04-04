@@ -192,7 +192,7 @@ class AddSC(FlaskForm):
     submit = SubmitField('Add User')
 
 class ZipSearchForm(FlaskForm):
-    searchzip = StringField('<h4>Zipcode</h4>', [Required()])
+    searchzip = StringField('Zipcode', [Required()])
     
     def validate_searchzip(self,field):
         searchzip = field.data
@@ -207,7 +207,7 @@ class ZipSearchForm(FlaskForm):
         if city == None:
             raise ValidationError('Please enter a valid 5-digit zip code')
    
-    searchradius = StringField('<h4>Search Mile Radius</h4>', [Required()])
+    searchradius = StringField('Search Mile Radius', [Required()])
     
     def validate_searchradius(self,field):
         searchradius = field.data
