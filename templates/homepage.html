@@ -22,6 +22,34 @@
  -->
  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
+<!--   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script>
+    $(document).ready(function(){ 
+      //Use the .attr method to get attributes
+      
+      // Use the .text method to update the content:
+      // selector.text(newValue)
+
+      // Use the .css method to update the content:
+      // selector.css(attribute, newValue)
+
+
+        $(".logo" ).on('focus mouseover',function() {
+          // 1) Take the alt text of the preview picture I just put into focus
+          // 2) Use this to set the text of the image
+        $("#image").text($(this).attr("alt"));
+        $("#image").css('image', 'url(../static/localbeats.png)');
+        })
+
+        $(".logo" ).on('blur mouseleave',function() {
+        $("#image").text("Hover over an image below");
+        $("#image").css('background-image', '');
+      })
+    });
+    </script>
+ -->
+
   <!-- <script>
     $(function() {
       $('a[href*=#]:not([href=#])').click(function() {
@@ -88,25 +116,26 @@
 
 
 
-
   <header>
 <a href="#" class="open">&equiv;</a>
 <a href="#cl" class="close hidden">&times;</a>
 
 <nav>
   <br>
-  <a href="/" ><img src="../static/localbeats.png" width="70%" height="70%" alt="logo" ></a>
+  <a href="/" ><img src="../static/localbeats.png" width="90%" height="90%" alt="logo" ></a>
 <br>
   <a href="#map">Map</a>
   <a href="#search">Search</a>
   <a href="/adduser">Add User</a>
-  <a href="#about">About</a>
-  <p>
-    Local Beats > &copy; 2018
-  </p>
-  <hr />
-  @JP Roeser
+<!--   <a href="#about">About</a>
+ -->   
+ <br><br><br><hr/>
+ <p> Local Beats &copy; 2018 </p>
+ 
+<!--   @JP Roeser -->
 </nav>
+
+
 
 
 
@@ -131,7 +160,11 @@
 
 
 <section id = "home"><div class="section home">
+
   <br><br><br>
+
+<!--   <div id="toplogo_main"></div> -->
+
   <center><img class="logo" src="../static/localbeats.png" onClick="window.location.href='/'" width="25%" height= 25%" alt="logo" ></center>
 
 <!--   <div>
@@ -143,8 +176,7 @@
   <h1>Connect with your local SoundCloud community</h1>
   <h2>Search through a database of SoundCloud users to explore your local creative community. Discover new artists, find new sounds, and connect with local talent!</h2>
 
-<br>
-<br>
+
 <div id = "home_buttons">
 <button class="button button1" onClick="document.getElementById('search').scrollIntoView({behavior: 'smooth'}); "  >Search For Users</button>
 <button class="button button1" onclick="window.location.href='/adduser'"  >Add Users</button>
@@ -248,7 +280,6 @@ https://developers.google.com/chart/interactive/docs/gallery/map#customizing-mar
 </div>
 </form>
 
-<br><br>
 
 </section>
 
