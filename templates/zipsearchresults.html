@@ -38,7 +38,7 @@
 
 </header>
 
-<div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" style= "min-width: 25%; max-width: 35%; min-height:25%; max-height: 35%; " alt="logo" ></div>
+<div id="toplogo"> <img src="../static/localbeats.png" onClick="window.location.href='/'" style= "min-width: 25%; max-width: 25%; min-height:25%; max-height: 25%; " alt="logo" ></div>
 
 
 
@@ -85,16 +85,16 @@
 	<h4>{{ u.Cities }}</h4>
 
 	{% if u.Soundcloud %}
-		<a href="{{u.Soundcloud}}" target="_blank"><img src="/static/soundcloud.png" alt="Soundcloud" width="50" height="50"/></a>
+		<a href="{{u.Soundcloud}}" target="_blank"><img src="/static/soundcloud.png" aria-label="Soundcloud" aria-hidden="true" alt="Soundcloud" width="50" height="50"/></a>
 	{% endif %}
 	{% if u.Facebook %}
-		<a href="{{u.Facebook}}" target="_blank"><img src="/static/facebook.png" alt="Facebook" width="50" height="50"/></a>
+		<a href="{{u.Facebook}}" target="_blank"><img src="/static/facebook.png" aria-label="Facebook" aria-hidden="true" alt="Facebook" width="50" height="50"/></a>
 	{% endif %}
 	{% if u.Twitter %}
-		<a href="{{u.Twitter}}" target="_blank"><img src="/static/twitter.png" alt="Twitter" width="50" height="50"/></a>	
+		<a href="{{u.Twitter}}" target="_blank"><img src="/static/twitter.png" aria-label="Twitter" aria-hidden="true" alt="Twitter" width="50" height="50"/></a>	
     {% endif %}
 	{% if u.Instagram %}
-		<a href="{{u.Instagram}}" target="_blank"><img src="/static/instagram.png" alt="Instagram" width="50" height="50"/></a>	
+		<a href="{{u.Instagram}}" target="_blank"><img src="/static/instagram.png" aria-label="Instagram" aria-hidden="true" alt="Instagram" width="50" height="50"/></a>	
     {% endif %}
     
 

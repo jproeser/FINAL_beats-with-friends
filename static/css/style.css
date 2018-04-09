@@ -979,8 +979,8 @@ input {
 
 #user_results a:hover,a:active
 {
-  display: inline-flex
-  padding: 5px 10px 15px 10px;
+/*  display: inline-flex
+*/  padding: 5px 10px 15px 10px;
 
   background-color:#4D5F7F;
   -webkit-border-radius: 4px;
@@ -1269,7 +1269,7 @@ h1{
   font-weight: 200;
   font-size: 24px;
 
-  color: #5CC253;
+  color: #BF1FBD;
 }
 
 
