@@ -24,7 +24,7 @@ Jinja2==2.10
 Mako==1.0.7
 MarkupSafe==1.0
 mutagen==1.39
-nltk==3.2.5
+nltk==3.4.5
 numpy==1.14.2
 psycopg2==2.7.3.2
 public==0.0.44
